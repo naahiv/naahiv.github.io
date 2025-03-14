@@ -1,0 +1,169 @@
+\ProvidesPackage{custom-preamble}
+
+%\RequirePackage{fix-cm}
+\usepackage{anyfontsize}
+%\usepackage[utf8]{inputenc}
+\usepackage{enumitem}
+\usepackage{mathtools}
+\usepackage{etoolbox}
+\usepackage{braket}
+\usepackage{quiver}
+\usepackage{extpfeil}
+\DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
+\usepackage{parskip}
+
+% testing
+\usepackage{hyperref}
+\usepackage[nameinlink, capitalize]{cleveref}
+\crefname{proposition}{Prop.}{Props.}
+\crefname{lemma}{Lemma}{Lemmas}
+\crefname{theorem}{Thm.}{Thms.}
+\crefname{theoremstar}{Thm.}{Thms.}
+\crefname{section}{Sec.}{Secs.}
+\crefname{definition}{Def.}{Defs.}
+\crefname{corollary}{Cor.}{Cors.}
+\crefname{exercise}{Exer.}{Exers.}
+
+\usepackage[utf8]{inputenc}
+\DeclareFontFamily{U}{min}{}
+\DeclareFontShape{U}{min}{m}{n}{<-> udmj30}{}
+\newcommand\yo{\!\text{\usefont{U}{min}{m}{n}\symbol{'207}}\!}
+
+%\numberwithin{equation}{section}%
+\setenumerate[0]{label=\arabic*.}
+
+\newcommand\isoto{\stackrel{\sim}{\smash{\longrightarrow}\rule{0pt}{0.4ex}}}
+\newcommand\isomto{\stackrel{\textstyle\sim}{\smash{\longrightarrow}\rule{0pt}{0.4ex}}}
+\newcommand\DistTo{\xrightarrow{
+   \,\smash{\raisebox{-0.65ex}{\ensuremath{\scriptstyle\sim}}}\,}}
+   \newcommand{\adj}[4]{#1\negmedspace: #2\rightleftarrows #3:\negmedspace #4}
+\newcommand{\Circ}{\mathop{\bigcirc}}
+\newcommand{\scriptC}{\mathscr{C}}
+\newcommand{\abs}[1]{\left\lvert{#1}\right\rvert}
+
+% arrows
+\newextarrow{\xbigtoto}{{20}{20}{20}{20}}
+   {\bigRelbar\bigRelbar{\bigtwoarrowsleft\rightarrow\rightarrow}}
+
+\newextarrow{\xbigtofrom}{{20}{20}{20}{50}}
+   {\bigRelbar\bigRelbar{\bigtwoarrowsleft\rightarrow\leftarrow}}
+
+\newcommand\longmapsfrom{\mathrel{\reflectbox{\ensuremath{\longmapsto}}}}
+
+\renewcommand{\hom}{\mathrm{Hom}}
+\newcommand{\aut}[1]{\mathrm{Aut}\,{#1}}
+\renewcommand{\Z}{\mathbb{Z}}
+\renewcommand{\Q}{\mathbb{Q}}
+\renewcommand{\C}{\mathbb{C}}
+\renewcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\gal}{\mathrm{Gal}}
+\renewcommand{\p}{\mathfrak{p}}
+\newcommand{\q}{\mathfrak{q}}
+\newcommand{\m}{\mathfrak{m}}
+\renewcommand{\im}[1]{\mathrm{im}\,{#1}}
+\newcommand{\spec}{\mathrm{Spec}}
+\newcommand{\mspec}{\mathrm{MSpec}}
+\newcommand{\nil}{\mathrm{nil}}
+\newcommand{\id}{\mathrm{id}}
+
+\newcommand{\F}{\mathcal{F}}
+
+\newcommand{\ab}{\mathbf{Ab}}
+\newcommand{\sset}{\mathbf{sSet}}
+\renewcommand{\Set}{\mathbf{Set}}
+\newcommand{\amod}[1]{{#1}\text-\mathbf{Mod}}
+\newcommand{\genr}[1]{\langle{#1}\rangle}
+\DeclareMathOperator{\cok}{cok}
+\newcommand{\n}{\mathfrak{n}}
+\newcommand{\hgt}{\mathrm{ht}}
+\renewcommand{\A}{\mathbf{A}\!}
+\newcommand{\psh}{\mathrm{PSh}}
+\newcommand{\sh}{\mathrm{Sh}}
+\renewcommand{\O}{\mathcal{O}}
+\newcommand{\ol}{\overline}
+\newcommand{\ihom}{\underline{\hom}}
+\newcommand{\wh}{\widehat}
+\newcommand{\wt}{\widetilde}
+\DeclareMathOperator{\cl}{cl}
+\newcommand{\epi}{\twoheadrightarrow}
+\newcommand{\mono}{\hookrightarrow}
+\newcommand{\qcoh}{\mathrm{QCoh}}
+\DeclareMathOperator{\Mod}{Mod}
+%\usepackage{todonotes}
+
+% BEGIN SPECIFIC TO ALG GEO
+\usepackage{xcolor}
+\newcommand{\G}{\mathcal{G}}
+\newcommand{\Vect}{\mathrm{Vect}}
+\DeclareMathOperator{\GL}{GL}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\op}{\mathrm{op}}
+
+\usepackage[new]{old-arrows}
+
+\def\closedimm{\mathrel{\mkern5mu  \vcenter{\hbox{$\scriptscriptstyle+$}}%
+                    \mkern-14mu{\varhookrightarrow}}}
+\def\longclosedimm{\mathrel{\mkern10mu  \vcenter{\hbox{$\scriptscriptstyle+$}}%
+                    \mkern-19mu{\longhookrightarrow}}}
+
+\newcommand{\Id}{\mathrm{Id}}
+
+\newcommand{\defn}{\textit}
+\DeclareMathOperator{\cod}{cod}
+\DeclareMathOperator{\dom}{dom}
+
+\newcommand{\Top}{\mathbf{Top}}
+\newcommand{\Sm}{\mathbf{Sm}}
+\newcommand{\et}{\mathrm{\acute{E}t}}
+% END SPECIFIC 
+
+% Begin specific to this project
+\usepackage[mathscr]{euscript}
+\newcommand{\scr}{\mathscr}
+
+\newcommand{\simp}{\mathbf{\Delta}}
+\newcommand{\Fun}{\mathrm{Fun}}
+\newcommand{\D}{\Delta}
+\renewcommand{\L}{\Lambda}
+\newcommand{\sing}{\mathrm{Sing}}
+\newcommand{\ho}{\mathrm{ho}}
+\newcommand{\cat}{\mathbf{Cat}}
+% End specific
+
+% Here, we increase the specificity of the numbering due to having many sections.
+
+\theoremstyle{thmstyleone}
+\newtheorem{theorem}{Theorem}[subsection]
+\newtheorem*{theorem*}{Theorem}
+\newtheorem{theoremstar}[theorem]{Theorem$*$}
+\newtheorem{proposition}[theorem]{Proposition}% 
+\newtheorem{exercise}[theorem]{Exercise}%
+\newtheorem{problem}{Problem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+
+
+\theoremstyle{thmstyletwo}%
+\newtheorem{example}[theorem]{Example}%
+\newtheorem{remark}[theorem]{Remark}%
+
+\theoremstyle{thmstylethree}%
+\newtheorem{definition}[theorem]{Definition}%
+
+
+\theoremstyle{thmstylesubproof}
+\newtheorem{sublemma}{Lemma}[problem]
+\newtheorem{subcor}{Corollary}[theorem]
+
+
+
+\makeatletter
+\providecommand{\leftsquigarrow}{%
+  \mathrel{\mathpalette\reflect@squig\relax}%
+}
+\newcommand{\reflect@squig}[2]{%
+  \reflectbox{$\m@th#1\rightsquigarrow$}%
+}
+\makeatother
+\raggedbottom
