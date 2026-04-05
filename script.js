@@ -1,11 +1,22 @@
 const workItems = [
   {
+    title: "Locally Finitely Presentable Categories",
+    year: 2025,
+    kind: "note",
+    status: "in progress",
+    pages: 29,
+    description: "Detailed notes on LFP categories with a view toward coefficient categories for sheafification.",
+    links: [
+      { label: "PDF", href: "lfp-categories.pdf" }
+    ]
+  },
+  {
     title: "Extending the Dold-Kan Correspondence",
     year: 2024,
     kind: "paper",
     status: "completed",
     pages: 34,
-    description: "Research paper",
+    description: "A full proof of the Dold-Kan correspondence with a full faithfulness result on semiadditive categories.",
     links: [
       { label: "PDF", href: "extending-dold-kan.pdf" }
     ]
@@ -16,7 +27,7 @@ const workItems = [
     kind: "paper",
     status: "completed",
     pages: 25,
-    description: "Research paper",
+    description: "A disussion of infinitary tensor products in a monoidal category.",
     links: [
       { label: "arXiv", href: "https://arxiv.org/abs/2304.03725", external: true }
     ]
@@ -28,7 +39,7 @@ const workItems = [
     status: "published",
     pages: 9,
     venue: "AIP Advances 12, 095306 (2022)",
-    description: "Published paper",
+    description: "Paper on a construction for the Controlled-Z gate in quantum computing.",
     links: [
       { label: "DOI", href: "https://doi.org/10.1063/5.0087364", external: true },
       { label: "arXiv", href: "https://arxiv.org/abs/2112.06067", external: true }
@@ -37,21 +48,65 @@ const workItems = [
   {
     title: "Towards Motivic Homotopy Theory",
     year: 2025,
-    kind: "project",
+    kind: "notes",
     status: "in progress",
     pages: 23,
-    description: "Project in progress",
+    description: "Some notes on pre-requisite and background material for motivic homotopy theory.",
     links: [
       { label: "PDF", href: "motivic-homotopy-theory.pdf" }
     ]
   },
+ {
+    title: "Notes on Model Categories for Higher Category Theory",
+    year: 2026,
+    kind: "notes",
+    status: "in progress",
+    pages: 43,
+    description: "Notes meant to follow Cisinski's HCHA; contains a lengthy section on cofibrations in topology.",
+    links: [
+      { label: "PDF", href: "hcha-reading.pdf" }
+    ]
+  },
+  {
+    title: "More Algebraic Geometry",
+    year: 2025,
+    kind: "notes",
+    status: "in progress",
+    pages: 25,
+    description: "Random notes on algebraic geometry. Contains a lengthy section on comparison of singular and sheaf cohomology in the derived category.",
+    links: [
+      { label: "PDF", href: "n-ag-topics.pdf" }
+    ]
+  },
+  {
+    title: "Notes on Representation Theory",
+    year: 2024,
+    kind: "notes",
+    status: "in progress",
+    pages: 38,
+    description: "Some scattered notes on introductory representation theory.",
+    links: [
+      { label: "PDF", href: "n-rep-theory.pdf" }
+    ]
+  },
+    {
+    title: "Notes on Basic Analysis",
+    year: 2023,
+    kind: "notes",
+    status: "in progress",
+    pages: 63,
+    description: "Detailed notes on calculus and real analysis.",
+    links: [
+      { label: "PDF", href: "n-basic-analysis.pdf" }
+    ]
+  },
   {
     title: "Obvious Facts in Algebraic Topology",
-    year: 2025,
+    year: 2024,
     kind: "project",
     status: "in progress",
     pages: 41,
-    description: "Project in progress",
+    description: "Proofs of oft-used topological facts in algebraic topology, and an appendix on CW complexes and locally compact spaces.",
     links: [
       { label: "PDF", href: "obvious-alg-top-facts.pdf" }
     ]
@@ -62,18 +117,18 @@ const workItems = [
     kind: "note",
     status: "completed",
     pages: 16,
-    description: "Expository note",
+    description: "A survey of the computation of topological Lie algebra cohomology for the loop group X(S^1).",
     links: [
       { label: "PDF", href: "gelfand-fuchs-cohomology.pdf" }
     ]
   },
   {
     title: "A Proof of Jennings' Theorem",
-    year: 2025,
+    year: 2024,
     kind: "note",
     status: "completed",
     pages: 10,
-    description: "Expository note",
+    description: "A short proof of Jennings' theorem from representation theory.",
     links: [
       { label: "PDF", href: "jennings-theorem.pdf" }
     ]
@@ -81,10 +136,10 @@ const workItems = [
   {
     title: "Introduction to Galois Theory",
     year: 2024,
-    kind: "project",
+    kind: "note",
     status: "in progress",
     pages: 42,
-    description: "Project in progress",
+    description: "Notes on elementary aspects of Galois theory.",
     links: [
       { label: "PDF", href: "galois-theory.pdf" }
     ]
@@ -95,7 +150,7 @@ const workItems = [
     kind: "note",
     status: "completed",
     pages: 21,
-    description: "Expository note",
+    description: "A proof that vector bundles on A^n are trivial, and a result for A^2-0.",
     links: [
       { label: "PDF", href: "serre-schemes.pdf" }
     ]
@@ -103,21 +158,21 @@ const workItems = [
   {
     title: "Notes on Schemes",
     year: 2024,
-    kind: "project",
+    kind: "notes",
     status: "in progress",
     pages: 31,
-    description: "Project in progress",
+    description: "Notes on introductory algebraic geometry. ",
     links: [
       { label: "PDF", href: "notes-on-schemes.pdf" }
     ]
   },
   {
-    title: "Tannakian Reconstruction for Tensor Categories: A Survey",
+    title: "Tannakian Reconstruction for Tensor Categories",
     year: 2024,
-    kind: "note",
+    kind: "survey",
     status: "completed",
     pages: 8,
-    description: "Survey note",
+    description: "A survey and explanation of the statement of Tannakian Reconstruction.",
     links: [
       { label: "PDF", href: "tensor-categories.pdf" }
     ]
