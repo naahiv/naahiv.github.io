@@ -1,5 +1,16 @@
 const workItems = [
   {
+	title: "Derived Categories in Algebraic Geometry: Part 1",
+    year: 2026,
+    kind: "note",
+    status: "in progress",
+    pages: 142,
+    description: "The first in a two-part series on the use of derived categories in algebraic geometry. This is being actively heavily edited.",
+    links: [
+      { label: "PDF", href: "derived-cats-in-ag.pdf" }
+    ]
+  },
+  {
     title: "Locally Finitely Presentable Categories",
     year: 2025,
     kind: "note",
