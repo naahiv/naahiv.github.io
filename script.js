@@ -4,10 +4,11 @@ const workItems = [
     year: 2026,
     kind: "note",
     status: "in progress",
-    pages: 389,
+    pages: 396,
     description: "The first in a two-part series on the use of derived categories in algebraic geometry. This is being actively heavily edited.",
     links: [
-      { label: "PDF", href: "derived-cats-in-ag.pdf" }
+      { label: "PDF", href: "derived-cats-in-ag.pdf" },
+      { label: "Book PDF", href: "derived-cats-in-ag-book.pdf" }
     ]
   },
   {
