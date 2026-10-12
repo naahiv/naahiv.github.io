@@ -1,6 +1,15 @@
 const workItems = [
   {
-	title: "Derived Categories in Algebraic Geometry: Part 1",
+    title: "Part 2: Stable ∞-categories in Algebraic Geometry",
+    year: 2026,
+    kind: "note",
+    status: "in progress",
+    pages: 120,
+    description: "The second in a two-part series on the use of derived categories in algebraic geometry. This is being actively heavily edited.",
+    links: []
+  },
+  {
+	title: "Part 1: Derived Categories in Algebraic Geometry",
     year: 2026,
     kind: "note",
     status: "in progress",
@@ -9,63 +18,6 @@ const workItems = [
     links: [
       { label: "PDF", href: "derived-cats-in-ag.pdf" },
       { label: "Book PDF", href: "derived-cats-in-ag-book.pdf" }
-    ]
-  },
-  {
-    title: "Locally Finitely Presentable Categories",
-    year: 2025,
-    kind: "note",
-    status: "in progress",
-    pages: 29,
-    description: "Detailed notes on LFP categories with a view toward coefficient categories for sheafification.",
-    links: [
-      { label: "PDF", href: "lfp-categories.pdf" }
-    ]
-  },
-  {
-    title: "Extending the Dold-Kan Correspondence",
-    year: 2024,
-    kind: "paper",
-    status: "completed",
-    pages: 34,
-    description: "A full proof of the Dold-Kan correspondence with a full faithfulness result on semiadditive categories.",
-    links: [
-      { label: "PDF", href: "extending-dold-kan.pdf" }
-    ]
-  },
-  {
-    title: "An Infinitary Model of Diagrammatic Calculus in Unbiased Monoidal Categories",
-    year: 2023,
-    kind: "paper",
-    status: "completed",
-    pages: 25,
-    description: "A disussion of infinitary tensor products in a monoidal category.",
-    links: [
-      { label: "arXiv", href: "https://arxiv.org/abs/2304.03725", external: true }
-    ]
-  },
-  {
-    title: "The Optimization of Flux Trajectories for the Adiabatic Controlled-Z Gate on Split-Tunable Transmons",
-    year: 2022,
-    kind: "paper",
-    status: "published",
-    pages: 9,
-    venue: "AIP Advances 12, 095306 (2022)",
-    description: "Paper on a construction for the Controlled-Z gate in quantum computing.",
-    links: [
-      { label: "DOI", href: "https://doi.org/10.1063/5.0087364", external: true },
-      { label: "arXiv", href: "https://arxiv.org/abs/2112.06067", external: true }
-    ]
-  },
-  {
-    title: "Towards Motivic Homotopy Theory",
-    year: 2025,
-    kind: "notes",
-    status: "in progress",
-    pages: 23,
-    description: "Some notes on pre-requisite and background material for motivic homotopy theory.",
-    links: [
-      { label: "PDF", href: "motivic-homotopy-theory.pdf" }
     ]
   },
  {
@@ -80,6 +32,17 @@ const workItems = [
     ]
   },
   {
+    title: "Locally Finitely Presentable Categories",
+    year: 2025,
+    kind: "note",
+    status: "in progress",
+    pages: 29,
+    description: "Detailed notes on LFP categories with a view toward coefficient categories for sheafification.",
+    links: [
+      { label: "PDF", href: "lfp-categories.pdf" }
+    ]
+  },
+  {
     title: "More Algebraic Geometry",
     year: 2025,
     kind: "notes",
@@ -91,36 +54,25 @@ const workItems = [
     ]
   },
   {
-    title: "Notes on Representation Theory",
-    year: 2024,
+    title: "Towards Motivic Homotopy Theory",
+    year: 2025,
     kind: "notes",
     status: "in progress",
-    pages: 38,
-    description: "Some scattered notes on introductory representation theory.",
+    pages: 23,
+    description: "Some notes on pre-requisite and background material for motivic homotopy theory.",
     links: [
-      { label: "PDF", href: "n-rep-theory.pdf" }
-    ]
-  },
-    {
-    title: "Notes on Basic Analysis",
-    year: 2023,
-    kind: "notes",
-    status: "in progress",
-    pages: 63,
-    description: "Detailed notes on calculus and real analysis.",
-    links: [
-      { label: "PDF", href: "n-basic-analysis.pdf" }
+      { label: "PDF", href: "motivic-homotopy-theory.pdf" }
     ]
   },
   {
-    title: "Obvious Facts in Algebraic Topology",
+    title: "Extending the Dold-Kan Correspondence",
     year: 2024,
-    kind: "project",
-    status: "in progress",
-    pages: 41,
-    description: "Proofs of oft-used topological facts in algebraic topology, and an appendix on CW complexes and locally compact spaces.",
+    kind: "paper",
+    status: "completed",
+    pages: 34,
+    description: "A full proof of the Dold-Kan correspondence with a full faithfulness result on semiadditive categories.",
     links: [
-      { label: "PDF", href: "obvious-alg-top-facts.pdf" }
+      { label: "PDF", href: "extending-dold-kan.pdf" }
     ]
   },
   {
@@ -146,6 +98,28 @@ const workItems = [
     ]
   },
   {
+    title: "Notes on Schemes",
+    year: 2024,
+    kind: "notes",
+    status: "in progress",
+    pages: 31,
+    description: "Notes on introductory algebraic geometry. ",
+    links: [
+      { label: "PDF", href: "notes-on-schemes.pdf" }
+    ]
+  },
+  {
+    title: "Notes on Representation Theory",
+    year: 2024,
+    kind: "notes",
+    status: "in progress",
+    pages: 38,
+    description: "Some scattered notes on introductory representation theory.",
+    links: [
+      { label: "PDF", href: "n-rep-theory.pdf" }
+    ]
+  },
+  {
     title: "Introduction to Galois Theory",
     year: 2024,
     kind: "note",
@@ -168,14 +142,14 @@ const workItems = [
     ]
   },
   {
-    title: "Notes on Schemes",
+    title: "Obvious Facts in Algebraic Topology",
     year: 2024,
-    kind: "notes",
+    kind: "project",
     status: "in progress",
-    pages: 31,
-    description: "Notes on introductory algebraic geometry. ",
+    pages: 41,
+    description: "Proofs of oft-used topological facts in algebraic topology, and an appendix on CW complexes and locally compact spaces.",
     links: [
-      { label: "PDF", href: "notes-on-schemes.pdf" }
+      { label: "PDF", href: "obvious-alg-top-facts.pdf" }
     ]
   },
   {
@@ -188,6 +162,41 @@ const workItems = [
     links: [
       { label: "PDF", href: "tensor-categories.pdf" }
     ]
+  },
+  {
+    title: "An Infinitary Model of Diagrammatic Calculus in Unbiased Monoidal Categories",
+    year: 2023,
+    kind: "paper",
+    status: "completed",
+    pages: 25,
+    description: "A disussion of infinitary tensor products in a monoidal category.",
+    links: [
+      { label: "arXiv", href: "https://arxiv.org/abs/2304.03725", external: true }
+    ]
+  },
+    {
+    title: "Notes on Basic Analysis",
+    year: 2023,
+    kind: "notes",
+    status: "in progress",
+    pages: 63,
+    description: "Detailed notes on calculus and real analysis.",
+    links: [
+      { label: "PDF", href: "n-basic-analysis.pdf" }
+    ]
+  },
+  {
+    title: "The Optimization of Flux Trajectories for the Adiabatic Controlled-Z Gate on Split-Tunable Transmons",
+    year: 2022,
+    kind: "paper",
+    status: "published",
+    pages: 9,
+    venue: "AIP Advances 12, 095306 (2022)",
+    description: "Paper on a construction for the Controlled-Z gate in quantum computing.",
+    links: [
+      { label: "DOI", href: "https://doi.org/10.1063/5.0087364", external: true },
+      { label: "arXiv", href: "https://arxiv.org/abs/2112.06067", external: true }
+    ]
   }
 ];
 
@@ -198,11 +207,6 @@ const resultsSummary = document.getElementById("resultsSummary");
 
 let activeFilter = "all";
 let activeQuery = "";
-
-const sortedWork = [...workItems].sort((a, b) => {
-  if (b.year !== a.year) return b.year - a.year;
-  return a.title.localeCompare(b.title);
-});
 
 function normalize(value) {
   return value.toLowerCase().trim();
@@ -254,7 +258,8 @@ function createTag(text, extraClass = "") {
 }
 
 function renderWork() {
-  const filtered = sortedWork.filter((item) => itemMatchesFilter(item) && itemMatchesQuery(item));
+  // Keep the workItems file order, including when searching or filtering.
+  const filtered = workItems.filter((item) => itemMatchesFilter(item) && itemMatchesQuery(item));
 
   workGrid.innerHTML = "";
 
