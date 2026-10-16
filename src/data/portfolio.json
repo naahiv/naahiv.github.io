@@ -2,17 +2,17 @@
   {
     "title": "Part 2: Stable ∞-categories in Algebraic Geometry",
     "year": 2026,
-    "kind": "note",
+    "kind": "project",
     "status": "in progress",
     "pages": 120,
     "description": "The second in a two-part series on the use of derived categories in algebraic geometry. This is being actively heavily edited.",
     "links": [],
-    "category": "note"
+    "category": "project"
   },
   {
     "title": "Part 1: Derived Categories in Algebraic Geometry",
     "year": 2026,
-    "kind": "note",
+    "kind": "project",
     "status": "in progress",
     "pages": 396,
     "description": "The first in a two-part series on the use of derived categories in algebraic geometry. This is being actively heavily edited.",
@@ -26,7 +26,7 @@
         "href": "derived-cats-in-ag-book.pdf"
       }
     ],
-    "category": "note"
+    "category": "project"
   },
   {
     "title": "Notes on Model Categories for Higher Category Theory",
@@ -196,7 +196,7 @@
   {
     "title": "Obvious Facts in Algebraic Topology",
     "year": 2024,
-    "kind": "project",
+    "kind": "note",
     "status": "in progress",
     "pages": 41,
     "description": "Proofs of oft-used topological facts in algebraic topology, and an appendix on CW complexes and locally compact spaces.",
@@ -206,7 +206,7 @@
         "href": "obvious-alg-top-facts.pdf"
       }
     ],
-    "category": "project"
+    "category": "note"
   },
   {
     "title": "Tannakian Reconstruction for Tensor Categories",

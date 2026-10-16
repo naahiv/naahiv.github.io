@@ -124,7 +124,7 @@ test('wide equations and diagrams are keyboard-scrollable local regions', async 
   await assertNoPageOverflow(page);
 });
 
-test('skip navigation, legacy fragments, and contact are usable by keyboard', async ({ page }) => {
+test('skip navigation, legacy fragments, and contact are usable by keyboard', async ({ page, request }) => {
   await page.goto('/');
   await page.keyboard.press('Tab');
   await expect(page.getByRole('link', { name: 'Skip to content' })).toBeFocused();
@@ -137,7 +137,11 @@ test('skip navigation, legacy fragments, and contact are usable by keyboard', as
     expect(top, fragment).toBeGreaterThanOrEqual(-1);
   }
   await expect(page.locator('a[href="mailto:naahiv@caltech.edu"]').first()).toBeVisible();
-  await expect(page.locator('a[href="/resume.pdf"]').first()).toBeVisible();
+  const resume = page.getByRole('link', { name: 'Resume', exact: true });
+  await expect(resume).toBeVisible();
+  await expect(resume).toBeDisabled();
+  await expect(page.locator('a[href="/resume.pdf"]')).toHaveCount(0);
+  expect((await request.get('/resume.pdf')).ok()).toBeTruthy();
 });
 
 test('full article and portfolio render without JavaScript', async ({ browser }) => {

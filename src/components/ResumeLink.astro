@@ -1,0 +1,12 @@
+---
+// Set this to true after replacing the existing root resume.pdf with a new version.
+const resumeAvailable = false;
+const { class: className } = Astro.props;
+---
+<a
+  class:list={[className, { 'resume-disabled': !resumeAvailable }]}
+  href={resumeAvailable ? '/resume.pdf' : undefined}
+  role="link"
+  aria-disabled={!resumeAvailable ? 'true' : undefined}
+  tabindex={!resumeAvailable ? -1 : undefined}
+><slot>Resume</slot></a>

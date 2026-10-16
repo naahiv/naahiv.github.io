@@ -1,5 +1,23 @@
 # Implementation progress
 
+## Publication preparation — 2026-10-16
+
+The user approved the reviewed website and requested publication. The reviewed homepage, disabled resume controls, blog invitation, and portfolio categories below are included in this release. A fresh GitHub inspection confirmed the existing live site at `2023f42de108f45f50807016494402ad7212fd35`, legacy Pages `master:/`, with the `github-pages` environment already restricted to the `master` branch.
+
+`.github/workflows/publish.yml` now defines publication only after a push to `master`: it runs unit/content and first-post integration checks, builds production and the separate draft specimen, checks canonical asset preservation, and runs all supported browser checks. Only `dist/` is packaged for deployment. Both specimen posts remain drafts. See [deployment.md](deployment.md) for publication and rollback.
+
+The reviewed local production output passed current-source preservation; all 19 canonical assets also match the original hashes. Release completion still requires hosted checks for the final commit, switching Pages to Actions, merging the approved branch, and verifying the actual live deployment. The local `work/` directory retains release configuration and rollback evidence. The records below describe earlier stages and are historical, not the current release status.
+
+## Local review update — 2026-10-16
+
+The development branch was subsequently pushed with user authorization. Commit `99fc7c1` fixes CI preview-server startup; [the hosted validation run](https://github.com/naahiv/naahiv.github.io/actions/runs/38962894742) passed all 54 browser checks. The original Cloud implementation record below predates that push. Production remains unchanged.
+
+Current local review changes remove the homepage subject eyebrow, portrait caption, and the second introductory sentence. The affiliation increases from 12px to 13px; the introductory paragraph decreases from 25px to 24px on desktop and from 22px to 21px at the narrower breakpoints. These changes are uncommitted for user review.
+
+Further requested review edits make every resume control gray and disabled while retaining `/resume.pdf` unchanged. `src/components/ResumeLink.astro` centralizes the controls; set `resumeAvailable` to true after replacing the PDF. Visible labels use "Resume" without accents. The blog invitation now reads "Notes and ideas." Portfolio kinds/categories put both Parts 1 and 2 under Projects and Obvious Facts in Algebraic Topology under Notes. Frozen migration evidence remains unchanged; these are intentional subsequent metadata changes.
+
+The local production build and current-source asset preservation check succeed. The freshly generated homepage, papers page, footer, and shared stylesheet were applied to the existing `dist-preview/` using ignored `work/refresh-reviewed-pages.mjs`, without removing either draft article or its math/diagram assets. This targeted local preview refresh avoids the previously observed native Windows TeX issue; it is not a fresh full draft build. The existing browser assertion was updated for disabled resume controls plus direct PDF availability. Future article changes still require the supported Linux/Cloud diagram build. The local preview runs at `http://localhost:4321/`.
+
 **Status: complete for development-branch review.** The implementation, authoring workflow, mathematical prototype, migration, browser tests, and evidence are complete. Production has not been changed. Start with [review.md](review.md).
 
 ## Authorization and repository state

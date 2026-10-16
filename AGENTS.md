@@ -2,7 +2,7 @@
 
 Read docs/progress.md before resuming. The complete requested brief and prior audit are in docs/source/; treat them as project requirements subject to the user's current instructions.
 
-- Work on codex/math-blog-revamp. Never merge/push master, change Pages settings, or deploy without explicit user authorization. Current Pages source is master:/ (legacy).
+- Develop on a codex/ branch. Never merge/push master, change Pages settings, or deploy without explicit user authorization. The publication workflow targets master and requires Pages source GitHub Actions; deployment is automatic after a master push passes its checks.
 - Node 24.19.0; npm ci. Native TeX Live (standalone, tikz-cd, amsmath, amssymb, mathtools, mathrsfs) and dvisvgm are required for diagrams. In this cloud workspace run `source /workspace/portfolio-toolchain/activate.sh` before native/browser commands.
 - `npm run dev`, `npm run build`, `npm run build:preview`, `npm test`, `npm run test:browser`, `npm run verify`. See docs/authoring.md for final author workflow.
 - Root PDFs, profile.jpg, and quiver-macros.tex are canonical and must retain their URLs and bytes. Only an explicit allowlist is staged; never use the whole repository as publicDir.

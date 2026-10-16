@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import ResumeLink from '../components/ResumeLink.astro';
 import serifFont from '@fontsource/source-serif-4/files/source-serif-4-latin-400-normal.woff2?url';
 import sansFont from '@fontsource/inter/files/inter-latin-400-normal.woff2?url';
 const {title='Vihaan Dheer', description='Mathematics at Caltech. Papers, notes, and writing on algebraic geometry, higher category theory, and homotopy theory.', active='home', article=false, draft=false} = Astro.props;
@@ -42,7 +43,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <main id="main"><slot /></main>
     <footer class="site-footer shell">
       <p>© {new Date().getUTCFullYear()} Vihaan Dheer</p>
-      <div><a href="mailto:naahiv@caltech.edu">Email</a><a href="/resume.pdf">Résumé</a><a href="/rss.xml">RSS</a><a href="#top">Back to top ↑</a></div>
+      <div><a href="mailto:naahiv@caltech.edu">Email</a><ResumeLink /><a href="/rss.xml">RSS</a><a href="#top">Back to top ↑</a></div>
     </footer>
   </body>
 </html>
