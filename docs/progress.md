@@ -1,5 +1,19 @@
 # Implementation progress
 
+## Local authoring setup — 2026-10-16
+
+The redesigned website is published at `https://naahiv.github.io/` from merge `b6ac703d850b96a85d25cb4acf98353e229ce45f` ([successful publication](https://github.com/naahiv/naahiv.github.io/actions/runs/38981145193)). The earlier preparation and Cloud records below are historical.
+
+The original Windows checkout at `C:\Users\vihaa\Documents\naahiv.github.io` was fast-forwarded to that release, then switched to local branch `codex/local-authoring-setup`. WSL Ubuntu now has checksum-verified Node 24.19.0/npm 11.17.0, TeX Live 2025 with the required packages, dvisvgm 3.6, and Poppler. Locked Linux dependencies were installed in this checkout. The native Windows MiKTeX installation was not changed.
+
+`Start draft preview.cmd` and `Stop draft preview.cmd` run the live authoring server for this same Windows folder through WSL, on `http://127.0.0.1:4323/blog/`. Polling detects Windows saves. The helpers reuse the correct server before touching generated files and validate process identity before shutdown. Logs and runtime configuration are ignored under `work/`. The older shortcut in Generic testing now forwards to this live preview.
+
+Verification: 28 unit/content/native-diagram tests passed, with the intentionally optional frozen migration test skipped. A newly created temporary draft rendered with KaTeX and real TikZ-CD. A Windows save plus a local macro change updated the article and changed its generated diagram within 2.4 seconds using the same running server. Start reuse, deleting the temporary draft, and Stop were verified. Both the complete draft build and production build passed preservation checks for 18 records and all 19 canonical assets, including 17 PDFs. The temporary test draft was removed.
+
+Daily workflow: work on `codex/blog-drafts` in the original Windows folder, create a draft with `npm.cmd run new:post -- my-post --title "My post"`, edit its `src/content/posts/my-post/index.md`, and use the Start shortcut. Stop before branch switches or separate builds. Detailed Windows instructions are at the beginning of [authoring.md](authoring.md). The setup is retained on `codex/local-authoring-setup`; the writing branch starts from the same setup commit. The user authorized committing and pushing this setup and preparing the authoring branch. Only `master` publishes the website.
+
+Final setup review: JavaScript and PowerShell helper syntax checks and `git diff --check` passed. Both local previews were stopped at the user's request. Next action: start the draft preview when ready to write; no setup or deployment action is needed.
+
 ## Publication preparation — 2026-10-16
 
 The user approved the reviewed website and requested publication. The reviewed homepage, disabled resume controls, blog invitation, and portfolio categories below are included in this release. A fresh GitHub inspection confirmed the existing live site at `2023f42de108f45f50807016494402ad7212fd35`, legacy Pages `master:/`, with the `github-pages` environment already restricted to the `master` branch.

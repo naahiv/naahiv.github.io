@@ -4,7 +4,11 @@ Static Astro portfolio and Markdown mathematics blog. The canonical PDFs stay at
 
 ## Run locally
 
+On the prepared Windows computer, use branch **`codex/blog-drafts`** and double-click **Start draft preview.cmd** in this folder. It runs the live editor preview through WSL Ubuntu at **http://127.0.0.1:4323/blog/**. Edit Markdown in this same Windows checkout, save, and refresh. **Stop draft preview.cmd** stops this checkout's server. See [the Windows workflow](docs/authoring.md#windows-workflow-in-this-checkout).
+
 Use Node **24.19.0**, npm, TeX Live (`latex`, standalone, tikz-cd, amsmath, amssymb, mathtools, mathrsfs), and `dvisvgm`. In the prepared cloud workspace first run `source /workspace/portfolio-toolchain/activate.sh`.
+
+Run the following commands in Linux/WSL. The prepared Windows checkout uses Linux dependencies; use the shortcuts above for daily previewing and the Windows workflow for PowerShell commands.
 
 ```sh
 npm ci
@@ -34,4 +38,4 @@ The browser suite starts production and preview servers automatically and tests 
 - [Migration/publisher contract](docs/migration.md) · [Architecture](docs/architecture.md)
 - [Verification](docs/verification.md) · [Deployment and rollback](docs/deployment.md)
 
-The development branch is `codex/math-blog-revamp`. Validation CI does not deploy. Production Pages settings and `master` are unchanged.
+Develop on a `codex/` branch. Validation CI does not deploy; approved merges into `master` trigger the checked GitHub Pages publication workflow. The redesigned site was published on 16 October 2026.
