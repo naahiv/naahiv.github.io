@@ -1,0 +1,41 @@
+
+> vihaan-dheer-mathematics@1.0.0 test
+> node --test tests/*.test.mjs
+
+✔ the documented new-post command creates a draft that compiles math, references, footnotes, and native TikZ-CD (652.955173ms)
+✔ new-post refuses overwrites and invalid slugs, dates, or options without changing existing work (484.334527ms)
+✔ SVG is accessible, transparent, padded and consistently namespaces all references (6.256208ms)
+✔ SVG rejects active elements, event attributes, external links, entities and missing references (1.365453ms)
+✔ native arrow specimen builds from empty cache; cache keys include shared macros (1853.458737ms)
+✔ native failures identify the source and compiler error, and missing semantics fail before compiling (1048.701365ms)
+✔ only the used, first-winning Markdown asset definition is copied (57.478328ms)
+✔ authored semantic labels cannot collide with page or generated footnote IDs (30.290903ms)
+✔ theorem-title links and reference assets receive ordinary content validation (11.90755ms)
+✔ diagram-caption links cannot bypass the asset and fragment validator (422.987088ms)
+✔ two-phase references resolve forward, colon, equation, section, and cross-post targets (58.373464ms)
+✔ theorem-like blocks share a counter; proofs and named unnumbered blocks do not advance it (19.264599ms)
+✔ macro arguments, deliberate overrides, operators, and fresh per-document state (4.958196ms)
+✔ documented mathematical notation profile renders without whole-package claims (16.109665ms)
+✔ mixed-formula references preserve their mathematical position and expose ordinary accessible links (13.703651ms)
+✔ math renders in headings, named blocks, lists, and footnotes; metadata stays plain (10.621905ms)
+✔ unknown commands, invalid math, missing and duplicate targets fail with file and line (23.407014ms)
+✔ metadata validation rejects malformed dates, unknown keys, and publishable specimens (8.207539ms)
+✔ drafts and their assets stay out of production; a production post cannot reference a draft (18.419456ms)
+✔ missing assets and traversal fail before publication (37.06259ms)
+✔ encoded asset names preserve their URL and invalid title math has file context (20.184981ms)
+✔ real demanding and short specimens compile with native diagrams and all stable targets (257.664113ms)
+﹣ migration retains all metadata, record/link order, 17 PDF bytes, portrait, and TeX asset (0.788839ms) # SKIP
+✔ current portfolio and staged assets agree without imposing frozen migration hashes (91.59946ms)
+✔ staging preserves compiler assets and only copies the explicit public allowlist (17.51095ms)
+✔ ongoing validation catches stale served assets and missing canonical files (26.145623ms)
+✔ migration comparison detects changed fields and reordered records (68.356482ms)
+✔ a PDF refresh changes only its canonical PDF and the single metadata file (103.767441ms)
+✔ validation rejects missing linked assets, invalid page counts, and unsafe manifest paths (6.899822ms)
+ℹ tests 29
+ℹ suites 0
+ℹ pass 28
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 1
+ℹ todo 0
+ℹ duration_ms 3001.185182

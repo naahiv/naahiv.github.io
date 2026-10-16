@@ -1,0 +1,48 @@
+---
+import '../styles/global.css';
+import serifFont from '@fontsource/source-serif-4/files/source-serif-4-latin-400-normal.woff2?url';
+import sansFont from '@fontsource/inter/files/inter-latin-400-normal.woff2?url';
+const {title='Vihaan Dheer', description='Mathematics at Caltech. Papers, notes, and writing on algebraic geometry, higher category theory, and homotopy theory.', active='home', article=false, draft=false} = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <link rel="preload" href={serifFont} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={sansFont} as="font" type="font/woff2" crossorigin />
+    <meta name="theme-color" content="#faf9f6" />
+    {draft && <meta name="robots" content="noindex, nofollow" />}
+    <title>{title === 'Vihaan Dheer' ? title + ' · Mathematics' : title + ' · Vihaan Dheer'}</title>
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" type="application/rss+xml" title="Vihaan Dheer · Blog" href="/rss.xml" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={article ? 'article' : 'website'} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL('/profile.jpg', Astro.site)} />
+    <meta name="twitter:card" content="summary" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="shell header-inner">
+        <a class="wordmark" href="/" aria-label="Vihaan Dheer, home">Vihaan Dheer<span>Mathematics</span></a>
+        <nav aria-label="Primary navigation">
+          <a href="/" aria-current={active==='home' ? 'page' : undefined}>Home</a>
+          <a href="/papers/" aria-current={active==='papers' ? 'page' : undefined}>Papers &amp; notes</a>
+          <a href="/blog/" aria-current={active==='blog' ? 'page' : undefined}>Blog</a>
+          <a href="/#about">About <span class="desktop-only">&amp; contact</span></a>
+        </nav>
+      </div>
+    </header>
+    <main id="main"><slot /></main>
+    <footer class="site-footer shell">
+      <p>© {new Date().getUTCFullYear()} Vihaan Dheer</p>
+      <div><a href="mailto:naahiv@caltech.edu">Email</a><a href="/resume.pdf">Résumé</a><a href="/rss.xml">RSS</a><a href="#top">Back to top ↑</a></div>
+    </footer>
+  </body>
+</html>

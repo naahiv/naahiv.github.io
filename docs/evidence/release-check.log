@@ -1,0 +1,5 @@
+
+> vihaan-dheer-mathematics@1.0.0 test:release
+> node scripts/verify-release.mjs
+
+First-publication check passed: 12 integration checks, 18 portfolio records, 19 unchanged assets (2.13s). Temporary fixture removed; production sources unchanged.

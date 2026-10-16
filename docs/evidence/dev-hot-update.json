@@ -1,0 +1,27 @@
+{
+  "url": "http://127.0.0.1:4323/blog/watcher-check-f0ea8dc4-0662-4925-8b1a-70e7e6427d17/",
+  "started": "2026-10-16T19:43:16.889Z",
+  "checks": [
+    {
+      "name": "draft added without restart",
+      "status": 200,
+      "hasFirst": true,
+      "hasSecond": false,
+      "elapsedMs": 920
+    },
+    {
+      "name": "draft edit served without restart",
+      "status": 200,
+      "hasFirst": false,
+      "hasSecond": true,
+      "elapsedMs": 682
+    },
+    {
+      "name": "draft removed without restart",
+      "status": 404,
+      "hasFirst": false,
+      "hasSecond": false,
+      "elapsedMs": 862
+    }
+  ]
+}

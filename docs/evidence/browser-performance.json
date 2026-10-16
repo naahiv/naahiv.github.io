@@ -1,0 +1,234 @@
+{
+  "measurements": [
+    {
+      "name": "portfolio",
+      "html": 19898,
+      "resources": [
+        {
+          "url": "/_astro/source-serif-4-latin-400-normal.DJ5YJwmz.woff2",
+          "bytes": 20088,
+          "transfer": 20388,
+          "type": "link"
+        },
+        {
+          "url": "/_astro/Site.CEXDyJhm.css",
+          "bytes": 18878,
+          "transfer": 19178,
+          "type": "link"
+        },
+        {
+          "url": "/profile.jpg",
+          "bytes": 300050,
+          "transfer": 300350,
+          "type": "img"
+        },
+        {
+          "url": "/_astro/inter-latin-400-normal.C38fXH4l.woff2",
+          "bytes": 23664,
+          "transfer": 23964,
+          "type": "link"
+        },
+        {
+          "url": "/_astro/inter-latin-500-normal.Cerq10X2.woff2",
+          "bytes": 24272,
+          "transfer": 24572,
+          "type": "css"
+        },
+        {
+          "url": "/_astro/inter-latin-600-normal.LgqL8muc.woff2",
+          "bytes": 24452,
+          "transfer": 24752,
+          "type": "css"
+        }
+      ]
+    },
+    {
+      "name": "blog",
+      "html": 5485,
+      "resources": [
+        {
+          "url": "/_astro/source-serif-4-latin-400-normal.DJ5YJwmz.woff2",
+          "bytes": 20088,
+          "transfer": 20388,
+          "type": "link"
+        },
+        {
+          "url": "/_astro/Site.CEXDyJhm.css",
+          "bytes": 18878,
+          "transfer": 19178,
+          "type": "link"
+        },
+        {
+          "url": "/_astro/inter-latin-400-normal.C38fXH4l.woff2",
+          "bytes": 23664,
+          "transfer": 23964,
+          "type": "link"
+        },
+        {
+          "url": "/search.json",
+          "bytes": 8515,
+          "transfer": 8815,
+          "type": "fetch"
+        },
+        {
+          "url": "/_astro/inter-latin-600-normal.LgqL8muc.woff2",
+          "bytes": 24452,
+          "transfer": 24752,
+          "type": "css"
+        },
+        {
+          "url": "/_astro/inter-latin-500-normal.Cerq10X2.woff2",
+          "bytes": 24272,
+          "transfer": 24572,
+          "type": "css"
+        }
+      ]
+    },
+    {
+      "name": "article",
+      "html": 196029,
+      "resources": [
+        {
+          "url": "/_astro/source-serif-4-latin-400-normal.DJ5YJwmz.woff2",
+          "bytes": 20088,
+          "transfer": 20388,
+          "type": "link"
+        },
+        {
+          "url": "/_astro/Site.CEXDyJhm.css",
+          "bytes": 18878,
+          "transfer": 19178,
+          "type": "link"
+        },
+        {
+          "url": "/_astro/_slug_.D4atBbkP.css",
+          "bytes": 29831,
+          "transfer": 30131,
+          "type": "link"
+        },
+        {
+          "url": "/_astro/inter-latin-400-normal.C38fXH4l.woff2",
+          "bytes": 23664,
+          "transfer": 23964,
+          "type": "link"
+        },
+        {
+          "url": "/_astro/inter-latin-600-normal.LgqL8muc.woff2",
+          "bytes": 24452,
+          "transfer": 24752,
+          "type": "css"
+        },
+        {
+          "url": "/_astro/inter-latin-500-normal.Cerq10X2.woff2",
+          "bytes": 24272,
+          "transfer": 24572,
+          "type": "css"
+        },
+        {
+          "url": "/_astro/source-serif-4-latin-600-normal.DouSKlru.woff2",
+          "bytes": 21532,
+          "transfer": 21832,
+          "type": "css"
+        },
+        {
+          "url": "/_astro/KaTeX_Math-Italic.t53AETM-.woff2",
+          "bytes": 16440,
+          "transfer": 16740,
+          "type": "css"
+        },
+        {
+          "url": "/_astro/KaTeX_Main-Regular.B22Nviop.woff2",
+          "bytes": 26272,
+          "transfer": 26572,
+          "type": "css"
+        },
+        {
+          "url": "/_astro/KaTeX_AMS-Regular.BQhdFMY1.woff2",
+          "bytes": 28076,
+          "transfer": 28376,
+          "type": "css"
+        },
+        {
+          "url": "/_astro/KaTeX_Caligraphic-Regular.Di6jR-x-.woff2",
+          "bytes": 6908,
+          "transfer": 7208,
+          "type": "css"
+        },
+        {
+          "url": "/_astro/KaTeX_Script-Regular.D3wIWfF6.woff2",
+          "bytes": 9644,
+          "transfer": 9944,
+          "type": "css"
+        },
+        {
+          "url": "/_astro/KaTeX_Size1-Regular.mCD8mA8B.woff2",
+          "bytes": 5468,
+          "transfer": 5768,
+          "type": "css"
+        },
+        {
+          "url": "/_astro/source-serif-4-latin-400-italic.0j97Jm6B.woff2",
+          "bytes": 20092,
+          "transfer": 20392,
+          "type": "css"
+        },
+        {
+          "url": "/_astro/KaTeX_Fraktur-Regular.CTYiF6lA.woff2",
+          "bytes": 11316,
+          "transfer": 11616,
+          "type": "css"
+        },
+        {
+          "url": "/_astro/KaTeX_Size2-Regular.Dy4dx90m.woff2",
+          "bytes": 5208,
+          "transfer": 5508,
+          "type": "css"
+        }
+      ]
+    }
+  ],
+  "fontChecks": [
+    {
+      "width": 1440,
+      "before": {
+        "fontStatus": "loading",
+        "titleHeight": 112.90625,
+        "articleTop": 572.328125
+      },
+      "after": {
+        "fontStatus": "loaded",
+        "titleHeight": 112.90625,
+        "articleTop": 572.328125,
+        "shifts": [
+          {
+            "value": 0.0010701544867621527,
+            "time": 1337.8000000000466
+          }
+        ],
+        "totalShift": 0.0010701544867621527,
+        "pageWidth": 1440
+      }
+    },
+    {
+      "width": 390,
+      "before": {
+        "fontStatus": "loading",
+        "titleHeight": 115.21875,
+        "articleTop": 645.34375
+      },
+      "after": {
+        "fontStatus": "loaded",
+        "titleHeight": 115.21875,
+        "articleTop": 645.34375,
+        "shifts": [
+          {
+            "value": 0.013091951642628205,
+            "time": 1315.3999999999069
+          }
+        ],
+        "totalShift": 0.013091951642628205,
+        "pageWidth": 390
+      }
+    }
+  ]
+}
