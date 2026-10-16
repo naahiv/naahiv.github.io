@@ -19,8 +19,6 @@ jobs:
     env:
       CI: 'true'
       ASTRO_TELEMETRY_DISABLED: '1'
-      PREVIEW_URL: http://127.0.0.1:4321
-      PRODUCTION_URL: http://127.0.0.1:4322
     steps:
       - uses: actions/checkout@v4
         with:
