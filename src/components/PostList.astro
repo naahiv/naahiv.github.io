@@ -1,0 +1,10 @@
+---
+import {dateLabel,tagSlug} from '../lib/posts';
+const {posts=[]}=Astro.props;
+---
+<div class="blog-list">{posts.map(post=><article class="post-entry" data-post-entry data-slug={post.slug}>
+  {post.draft&&<span class="draft-label">{post.specimen ? 'Unpublished specimen' : 'Unpublished draft'}</span>}
+  <div class="post-meta"><time datetime={post.date}>{dateLabel(post.date)}</time><span aria-hidden="true">/</span><span>{post.readingMinutes||Math.max(1,Math.ceil(post.searchText.split(/\s+/).length/190))} min read</span></div>
+  <h2><a href={post.url}>{post.title}</a></h2><p>{post.summary}</p>
+  <div class="topics">{post.tags.map(tag=><a href={`/blog/tags/${tagSlug(tag)}/`}>{tag.replaceAll('-',' ')}</a>)}</div>
+</article>)}</div>

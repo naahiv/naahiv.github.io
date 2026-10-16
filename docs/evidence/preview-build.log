@@ -1,0 +1,36 @@
+
+> vihaan-dheer-mathematics@1.0.0 build:preview
+> node scripts/build-preview.mjs
+
+19:54:23 [content] Syncing content
+19:54:23 [content] Synced content
+19:54:23 [types] Generated 661ms
+19:54:23 [build] output: "static"
+19:54:23 [build] mode: "static"
+19:54:23 [build] directory: /workspace/naahiv.github.io/dist-preview/
+19:54:23 [build] Collecting build info...
+19:54:23 [build] ✓ Completed in 697ms.
+19:54:23 [build] Building static entrypoints...
+19:54:23 [vite] ✓ built in 342ms
+19:54:23 [vite] ✓ built in 64ms
+19:54:23 [build] Rearranging server assets...
+
+ generating static routes
+19:54:23   ├─ /404.html (+8ms)
+19:54:23   ├─ /blog/archive/index.html (+3ms)
+19:54:23   ├─ /blog/tags/category-theory/index.html (+2ms)
+19:54:23   ├─ /blog/tags/exposition/index.html (+2ms)
+19:54:23   ├─ /blog/mathematical-writing-specimen/index.html (+3ms)
+19:54:23   ├─ /blog/a-small-pullback/index.html (+1ms)
+19:54:23   ├─ /blog/index.html (+3ms)
+19:54:23   ├─ /papers/index.html (+3ms)
+19:54:23   ├─ /robots.txt (+1ms)
+19:54:23   ├─ /rss.xml (+1ms)
+19:54:23   ├─ /search.json (+1ms)
+19:54:23   ├─ /sitemap.xml (+1ms)
+19:54:23   ├─ /index.html (+2ms)
+19:54:23 ✓ Completed in 54ms.
+
+19:54:23 [build] ✓ Completed in 503ms.
+19:54:23 [build] 9 page(s) built in 1.21s
+19:54:23 [build] Complete!

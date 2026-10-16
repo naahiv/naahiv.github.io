@@ -1,0 +1,7 @@
+---
+import Site from '../../../layouts/Site.astro';
+import PostList from '../../../components/PostList.astro';
+import {posts} from '../../../lib/posts';
+const all=await posts();const years=[...new Set(all.map(p=>p.date.slice(0,4)))];
+---
+<Site title="Blog archive" active="blog"><div class="shell" id="top"><header class="page-intro"><p class="eyebrow"><a href="/blog/">The blog</a></p><h1>Archive</h1><p class="lead">Mathematical writing, in time.</p></header>{years.length?years.map(year=><section aria-label={year}><h2 class="archive-year">{year}</h2><PostList posts={all.filter(p=>p.date.startsWith(year))}/></section>):<section class="empty-state"><h2>The first page is still to come.</h2><p>Published posts will be collected here by year.</p><a href="/papers/">Read the papers and notes →</a></section>}</div></Site>

@@ -1,0 +1,8 @@
+---
+import Site from '../../../layouts/Site.astro';
+import PostList from '../../../components/PostList.astro';
+import {posts,tagSlug} from '../../../lib/posts';
+export async function getStaticPaths(){const all=await posts();return [...new Set(all.flatMap(p=>p.tags))].map(tag=>({params:{tag:tagSlug(tag)},props:{tag,selected:all.filter(p=>p.tags.includes(tag))}}));}
+const {tag,selected}=Astro.props;
+---
+<Site title={`Posts on ${tag.replaceAll('-',' ')}`} active="blog"><div class="shell" id="top"><header class="page-intro"><p class="eyebrow"><a href="/blog/">The blog</a> / Topic</p><h1>{tag.replaceAll('-',' ')}</h1><p class="quiet">{selected.length} {selected.length===1?'post':'posts'}</p></header><PostList posts={selected}/></div></Site>

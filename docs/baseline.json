@@ -1,0 +1,372 @@
+{
+  "purpose": "Frozen migration evidence, not live portfolio metadata. Normal PDF refreshes must not update this file.",
+  "capturedOn": "2026-10-16",
+  "sourceCommit": "2023f42de108f45f50807016494402ad7212fd35",
+  "legacyMetadataPath": "script.js",
+  "legacyMetadataSha256": "a9108c5bfbaa3c47c6f715d626c836871e5544b5556124e4d31d00edd973dd25",
+  "portfolio": [
+    {
+      "title": "Part 2: Stable ∞-categories in Algebraic Geometry",
+      "year": 2026,
+      "kind": "note",
+      "status": "in progress",
+      "pages": 120,
+      "description": "The second in a two-part series on the use of derived categories in algebraic geometry. This is being actively heavily edited.",
+      "links": []
+    },
+    {
+      "title": "Part 1: Derived Categories in Algebraic Geometry",
+      "year": 2026,
+      "kind": "note",
+      "status": "in progress",
+      "pages": 396,
+      "description": "The first in a two-part series on the use of derived categories in algebraic geometry. This is being actively heavily edited.",
+      "links": [
+        {
+          "label": "PDF",
+          "href": "derived-cats-in-ag.pdf"
+        },
+        {
+          "label": "Book PDF",
+          "href": "derived-cats-in-ag-book.pdf"
+        }
+      ]
+    },
+    {
+      "title": "Notes on Model Categories for Higher Category Theory",
+      "year": 2026,
+      "kind": "notes",
+      "status": "in progress",
+      "pages": 43,
+      "description": "Notes meant to follow Cisinski's HCHA; contains a lengthy section on cofibrations in topology.",
+      "links": [
+        {
+          "label": "PDF",
+          "href": "hcha-reading.pdf"
+        }
+      ]
+    },
+    {
+      "title": "Locally Finitely Presentable Categories",
+      "year": 2025,
+      "kind": "note",
+      "status": "in progress",
+      "pages": 29,
+      "description": "Detailed notes on LFP categories with a view toward coefficient categories for sheafification.",
+      "links": [
+        {
+          "label": "PDF",
+          "href": "lfp-categories.pdf"
+        }
+      ]
+    },
+    {
+      "title": "More Algebraic Geometry",
+      "year": 2025,
+      "kind": "notes",
+      "status": "in progress",
+      "pages": 25,
+      "description": "Random notes on algebraic geometry. Contains a lengthy section on comparison of singular and sheaf cohomology in the derived category.",
+      "links": [
+        {
+          "label": "PDF",
+          "href": "n-ag-topics.pdf"
+        }
+      ]
+    },
+    {
+      "title": "Towards Motivic Homotopy Theory",
+      "year": 2025,
+      "kind": "notes",
+      "status": "in progress",
+      "pages": 23,
+      "description": "Some notes on pre-requisite and background material for motivic homotopy theory.",
+      "links": [
+        {
+          "label": "PDF",
+          "href": "motivic-homotopy-theory.pdf"
+        }
+      ]
+    },
+    {
+      "title": "Extending the Dold-Kan Correspondence",
+      "year": 2024,
+      "kind": "paper",
+      "status": "completed",
+      "pages": 34,
+      "description": "A full proof of the Dold-Kan correspondence with a full faithfulness result on semiadditive categories.",
+      "links": [
+        {
+          "label": "PDF",
+          "href": "extending-dold-kan.pdf"
+        }
+      ]
+    },
+    {
+      "title": "The Gelfand-Fuchs Cohomology of Vector Fields on S1",
+      "year": 2025,
+      "kind": "note",
+      "status": "completed",
+      "pages": 16,
+      "description": "A survey of the computation of topological Lie algebra cohomology for the loop group X(S^1).",
+      "links": [
+        {
+          "label": "PDF",
+          "href": "gelfand-fuchs-cohomology.pdf"
+        }
+      ]
+    },
+    {
+      "title": "A Proof of Jennings' Theorem",
+      "year": 2024,
+      "kind": "note",
+      "status": "completed",
+      "pages": 10,
+      "description": "A short proof of Jennings' theorem from representation theory.",
+      "links": [
+        {
+          "label": "PDF",
+          "href": "jennings-theorem.pdf"
+        }
+      ]
+    },
+    {
+      "title": "Notes on Schemes",
+      "year": 2024,
+      "kind": "notes",
+      "status": "in progress",
+      "pages": 31,
+      "description": "Notes on introductory algebraic geometry. ",
+      "links": [
+        {
+          "label": "PDF",
+          "href": "notes-on-schemes.pdf"
+        }
+      ]
+    },
+    {
+      "title": "Notes on Representation Theory",
+      "year": 2024,
+      "kind": "notes",
+      "status": "in progress",
+      "pages": 38,
+      "description": "Some scattered notes on introductory representation theory.",
+      "links": [
+        {
+          "label": "PDF",
+          "href": "n-rep-theory.pdf"
+        }
+      ]
+    },
+    {
+      "title": "Introduction to Galois Theory",
+      "year": 2024,
+      "kind": "note",
+      "status": "in progress",
+      "pages": 42,
+      "description": "Notes on elementary aspects of Galois theory.",
+      "links": [
+        {
+          "label": "PDF",
+          "href": "galois-theory.pdf"
+        }
+      ]
+    },
+    {
+      "title": "Serre Schemes and the Quillen-Suslin Theorem",
+      "year": 2024,
+      "kind": "note",
+      "status": "completed",
+      "pages": 21,
+      "description": "A proof that vector bundles on A^n are trivial, and a result for A^2-0.",
+      "links": [
+        {
+          "label": "PDF",
+          "href": "serre-schemes.pdf"
+        }
+      ]
+    },
+    {
+      "title": "Obvious Facts in Algebraic Topology",
+      "year": 2024,
+      "kind": "project",
+      "status": "in progress",
+      "pages": 41,
+      "description": "Proofs of oft-used topological facts in algebraic topology, and an appendix on CW complexes and locally compact spaces.",
+      "links": [
+        {
+          "label": "PDF",
+          "href": "obvious-alg-top-facts.pdf"
+        }
+      ]
+    },
+    {
+      "title": "Tannakian Reconstruction for Tensor Categories",
+      "year": 2024,
+      "kind": "survey",
+      "status": "completed",
+      "pages": 8,
+      "description": "A survey and explanation of the statement of Tannakian Reconstruction.",
+      "links": [
+        {
+          "label": "PDF",
+          "href": "tensor-categories.pdf"
+        }
+      ]
+    },
+    {
+      "title": "An Infinitary Model of Diagrammatic Calculus in Unbiased Monoidal Categories",
+      "year": 2023,
+      "kind": "paper",
+      "status": "completed",
+      "pages": 25,
+      "description": "A disussion of infinitary tensor products in a monoidal category.",
+      "links": [
+        {
+          "label": "arXiv",
+          "href": "https://arxiv.org/abs/2304.03725",
+          "external": true
+        }
+      ]
+    },
+    {
+      "title": "Notes on Basic Analysis",
+      "year": 2023,
+      "kind": "notes",
+      "status": "in progress",
+      "pages": 63,
+      "description": "Detailed notes on calculus and real analysis.",
+      "links": [
+        {
+          "label": "PDF",
+          "href": "n-basic-analysis.pdf"
+        }
+      ]
+    },
+    {
+      "title": "The Optimization of Flux Trajectories for the Adiabatic Controlled-Z Gate on Split-Tunable Transmons",
+      "year": 2022,
+      "kind": "paper",
+      "status": "published",
+      "pages": 9,
+      "venue": "AIP Advances 12, 095306 (2022)",
+      "description": "Paper on a construction for the Controlled-Z gate in quantum computing.",
+      "links": [
+        {
+          "label": "DOI",
+          "href": "https://doi.org/10.1063/5.0087364",
+          "external": true
+        },
+        {
+          "label": "arXiv",
+          "href": "https://arxiv.org/abs/2112.06067",
+          "external": true
+        }
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "path": "derived-cats-in-ag-book.pdf",
+      "bytes": 2662772,
+      "sha256": "789a87530bf20477757e0c3b69b503c13188d7cd57afaef77f92e424aa81fde9"
+    },
+    {
+      "path": "derived-cats-in-ag.pdf",
+      "bytes": 2352724,
+      "sha256": "07226dc345a86902588709f1f0b103fc603fb38c8c5d7e4c00539fc3a0b95136"
+    },
+    {
+      "path": "extending-dold-kan.pdf",
+      "bytes": 411126,
+      "sha256": "e1e9f5acb4721a4d02d11d8682d2811eccabde62f3abfda1a86f652ec0e5d635"
+    },
+    {
+      "path": "galois-theory.pdf",
+      "bytes": 469286,
+      "sha256": "9868ed8b584194dea432cf54673d354dce09deab9f22bce910dc38776de58721"
+    },
+    {
+      "path": "gelfand-fuchs-cohomology.pdf",
+      "bytes": 289598,
+      "sha256": "c0d8bd4d2f166c61e621787225145837e515d6873da9b9a62bbee24e6cc8e757"
+    },
+    {
+      "path": "hcha-reading.pdf",
+      "bytes": 496314,
+      "sha256": "d562c69f328c582179ca25073741d223166379d24138968054003c73481ef908"
+    },
+    {
+      "path": "jennings-theorem.pdf",
+      "bytes": 262653,
+      "sha256": "103a504a272c1b45fa50717028a27b30e9e42705bc75f74b0c9f4619b8c0b0fc"
+    },
+    {
+      "path": "lfp-categories.pdf",
+      "bytes": 411534,
+      "sha256": "48db13a5f752ff16d00ed5c76fe8448a55a70f979bc083dbd1c75fba33a517e4"
+    },
+    {
+      "path": "motivic-homotopy-theory.pdf",
+      "bytes": 347835,
+      "sha256": "87aa8831d950b51ed213645b00c64dcde23d6c6460fc7b4f29ab41afc0ebaf2a"
+    },
+    {
+      "path": "n-ag-topics.pdf",
+      "bytes": 398706,
+      "sha256": "1990c89051670698fe94bd3a45207cceb250da97a9963d5335c74fa9458ceb0a"
+    },
+    {
+      "path": "n-basic-analysis.pdf",
+      "bytes": 507509,
+      "sha256": "4e67f76b2f70e1f0999fef8e3683791e54d3abb50f5ee8e550ef8900fb3f33da"
+    },
+    {
+      "path": "n-rep-theory.pdf",
+      "bytes": 465428,
+      "sha256": "b268673a181c84562c0e514a95fddf037356cf5e36f18dab5469b476f2f6fa5e"
+    },
+    {
+      "path": "notes-on-schemes.pdf",
+      "bytes": 406221,
+      "sha256": "f76ee8aba174b454f12bf39f21e9dc6acac7621e6af46867b0d4d6140c446952"
+    },
+    {
+      "path": "obvious-alg-top-facts.pdf",
+      "bytes": 457505,
+      "sha256": "6debd9c9068c9db75d11de7d98fe1be10bef345746c560451ce259c350dbfd60"
+    },
+    {
+      "path": "profile.jpg",
+      "bytes": 300050,
+      "sha256": "835cef78848e838eb6112a18cdbd78df6c387569ffd43e815d2531dcdb01660d"
+    },
+    {
+      "path": "quiver-macros.tex",
+      "bytes": 2238,
+      "sha256": "a3e2b87275420422d30a1760c9dfc74da680bbc398f92b4f71de003947548adf"
+    },
+    {
+      "path": "resume.pdf",
+      "bytes": 153795,
+      "sha256": "2c48c4bc6481033a167a4fd4bc4b80ddf54cefe55b6de3dfb4aefcb6d8447abc"
+    },
+    {
+      "path": "serre-schemes.pdf",
+      "bytes": 353742,
+      "sha256": "bc3ac92b2d7b1bb585b2a162a127b3a46d43a8512f2118407d74f82be6ad5726"
+    },
+    {
+      "path": "tensor-categories.pdf",
+      "bytes": 280511,
+      "sha256": "19baed22b0ccd702043041694750d393a8843aebe7792eecacc6eadef0d85550"
+    }
+  ],
+  "requiredFragments": [
+    "top",
+    "work",
+    "about",
+    "contact"
+  ],
+  "activeEmail": "naahiv@caltech.edu"
+}

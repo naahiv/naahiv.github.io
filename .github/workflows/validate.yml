@@ -1,0 +1,87 @@
+name: Validate website
+
+on:
+  push:
+  pull_request:
+
+# This workflow can validate and upload review artifacts, never publish Pages.
+permissions:
+  contents: read
+
+concurrency:
+  group: validate-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      CI: 'true'
+      ASTRO_TELEMETRY_DISABLED: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.19.0
+          cache: npm
+
+      - name: Install native diagram and PDF tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends --yes texlive-latex-base texlive-latex-recommended texlive-latex-extra texlive-pictures texlive-fonts-recommended texlive-science dvisvgm poppler-utils util-linux
+          latex --version
+          dvisvgm --version
+
+      - name: Install locked JavaScript dependencies
+        run: npm ci
+
+      - name: Unit and content checks with an empty diagram cache
+        run: |
+          rm -rf .cache/tikzcd .generated .astro dist dist-preview
+          npm test
+          npm run test:release
+
+      - name: Build production and verify current canonical assets
+        run: |
+          npm run build
+          node scripts/verify-preservation.mjs
+
+      - name: Rebuild the complete draft specimen from TeX source
+        run: |
+          rm -rf .cache/tikzcd .astro
+          npm run build:preview
+          node scripts/verify-preservation.mjs --dir=dist-preview
+
+      - name: Install browsers pinned by the Playwright lockfile
+        run: npx --no-install playwright install --with-deps chromium firefox webkit
+
+      - name: Test Chromium, Firefox, and WebKit
+        # Playwright starts the two local static servers from dist-preview and dist.
+        run: npm run test:browser
+
+      - name: Upload browser review evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-review-${{ github.sha }}
+          path: |
+            work/browser-results/
+            work/browser-report/
+            work/screenshots/
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Upload static builds for review
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: website-review-${{ github.sha }}
+          path: |
+            dist/
+            dist-preview/
+          include-hidden-files: true
+          retention-days: 14

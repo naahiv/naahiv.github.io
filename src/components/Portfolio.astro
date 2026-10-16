@@ -1,0 +1,32 @@
+---
+import work from '../data/portfolio.json';
+const rootHref=(href)=> /^(https?:|mailto:|\/)/.test(href) ? href : '/'+href;
+---
+<section id="work" aria-labelledby="work-heading" data-portfolio>
+  <div class="section-heading"><div><p class="eyebrow">Portfolio</p><h2 id="work-heading">Papers &amp; notes</h2></div><p>Expository writing, research, and work in progress.</p></div>
+  <div class="portfolio-controls" data-enhancement hidden>
+    <label class="search-field"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="m15 15 5 5" stroke="currentColor" stroke-width="1.5"/></svg><input type="search" aria-label="Search papers and notes" placeholder="Search titles, topics, or years" /></label>
+    <div class="filter-row" role="group" aria-label="Filter papers and notes">
+      {[['all','All'],['paper','Papers'],['note','Notes & surveys'],['project','Projects'],['in progress','In progress']].map(([value,label])=><button type="button" data-filter={value} aria-pressed={value==='all' ? 'true':'false'}>{label}</button>)}
+    </div>
+  </div>
+  <p class="results-summary" aria-live="polite" data-results-summary>{work.length} works · in the author’s selected order</p>
+  <div class="work-list">{work.map((item,index)=><article class="work-item" data-work-item data-category={item.category} data-status={item.status} data-search={[item.title,item.year,item.kind,item.status,item.description,item.venue,...item.links.map(l=>l.label)].filter(Boolean).join(' ').toLowerCase()}>
+    <div class="work-year">{item.year}</div>
+    <div><h3>{item.title}</h3><p class="work-description">{item.description}</p>{item.venue&&<p class="work-venue">{item.venue}</p>}<p class="work-meta"><span>{item.kind==='paper'?'Paper':item.kind==='project'?'Project':item.kind==='survey'?'Survey':'Notes'}</span>{item.pages&&<><span aria-hidden="true">·</span><span>{item.pages} pages</span></>}<span aria-hidden="true">·</span><span class:list={{status:item.status==='in progress'}}>{item.status}</span></p></div>
+    <div class="work-links">{item.links.map(link=><a href={rootHref(link.href)} rel={link.external?'noopener noreferrer':undefined}>{link.label} <span aria-hidden="true">↗︎</span></a>)}</div>
+  </article>)}</div>
+  <p class="work-empty" data-work-empty hidden>No matching works. Try another title, topic, or year.</p>
+</section>
+<script>
+  for (const section of document.querySelectorAll<HTMLElement>('[data-portfolio]')) {
+    section.querySelector<HTMLElement>('[data-enhancement]')!.hidden=false;
+    const input=section.querySelector<HTMLInputElement>('input')!;
+    const items=[...section.querySelectorAll<HTMLElement>('[data-work-item]')];
+    const buttons=[...section.querySelectorAll<HTMLButtonElement>('button[data-filter]')];
+    let filter='all';
+    function update(){const q=input.value.trim().toLowerCase();let count=0;for(const item of items){const match=(filter==='all'||item.dataset.category===filter||filter==='in progress'&&item.dataset.status===filter)&&item.dataset.search!.includes(q);item.hidden=!match;if(match)count++;}section.querySelector<HTMLElement>('[data-results-summary]')!.textContent=`${count} ${count===1?'work':'works'} · in the author’s selected order`;section.querySelector<HTMLElement>('[data-work-empty]')!.hidden=count>0;}
+    input.addEventListener('input',update);
+    for(const button of buttons)button.addEventListener('click',()=>{filter=button.dataset.filter!;for(const b of buttons)b.setAttribute('aria-pressed',String(b===button));update();});
+  }
+</script>

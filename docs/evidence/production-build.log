@@ -1,0 +1,39 @@
+
+> vihaan-dheer-mathematics@1.0.0 build
+> node scripts/prepare.mjs && astro build
+
+19:49:31 [content] Syncing content
+19:49:31 [content] Synced content
+19:49:31 [types] Generated 813ms
+19:49:31 [build] output: "static"
+19:49:31 [build] mode: "static"
+19:49:31 [build] directory: /workspace/naahiv.github.io/dist/
+19:49:31 [build] Collecting build info...
+19:49:31 [build] ✓ Completed in 851ms.
+19:49:31 [build] Building static entrypoints...
+19:49:32 [vite] ✓ built in 581ms
+19:49:32 [vite] ✓ built in 57ms
+19:49:32 [build] Rearranging server assets...
+
+ generating static routes
+19:49:32 [WARN] [content] The collection "posts" does not exist or is empty. Please check your content config file for errors.
+19:49:32 [WARN] [content] The collection "posts" does not exist or is empty. Please check your content config file for errors.
+19:49:32   ├─ /404.html (+11ms)
+19:49:32   ├─ /blog/archive/index.html19:49:32 [WARN] [content] The collection "posts" does not exist or is empty. Please check your content config file for errors.
+ (+3ms)
+19:49:32   ├─ /blog/index.html19:49:32 [WARN] [content] The collection "posts" does not exist or is empty. Please check your content config file for errors.
+ (+3ms)
+19:49:32   ├─ /papers/index.html (+4ms)
+19:49:32   ├─ /robots.txt (+2ms)
+19:49:32   ├─ /rss.xml19:49:32 [WARN] [content] The collection "posts" does not exist or is empty. Please check your content config file for errors.
+ (+1ms)
+19:49:32   ├─ /search.json19:49:32 [WARN] [content] The collection "posts" does not exist or is empty. Please check your content config file for errors.
+ (+1ms)
+19:49:32   ├─ /sitemap.xml19:49:32 [WARN] [content] The collection "posts" does not exist or is empty. Please check your content config file for errors.
+ (+1ms)
+19:49:32   ├─ /index.html (+3ms)
+19:49:32 ✓ Completed in 70ms.
+
+19:49:32 [build] ✓ Completed in 756ms.
+19:49:32 [build] 5 page(s) built in 1.62s
+19:49:32 [build] Complete!
