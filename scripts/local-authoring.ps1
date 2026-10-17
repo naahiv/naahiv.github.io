@@ -5,13 +5,20 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $repoRoot = Split-Path -Parent $PSScriptRoot
-$workDirectory = Join-Path $repoRoot 'work'
+$workDirectory = (& node (Join-Path $PSScriptRoot 'work-directory.mjs') | Out-String).Trim()
+if ($LASTEXITCODE -ne 0 -or -not [System.IO.Path]::IsPathRooted($workDirectory)) {
+    throw 'Could not locate the external website working directory.'
+}
 $previewUrl = 'http://127.0.0.1:4323/blog/'
 $identityUrl = 'http://127.0.0.1:4323/__local-authoring.json'
 $wslExecutable = (Get-Command wsl.exe -ErrorAction Stop).Source
 $linuxRoot = (& $wslExecutable -d Ubuntu --exec wslpath -a -u $repoRoot | Out-String).Trim()
 if ($LASTEXITCODE -ne 0 -or -not $linuxRoot.StartsWith('/')) {
     throw 'Could not open the website folder through WSL Ubuntu.'
+}
+$linuxWork = (& $wslExecutable -d Ubuntu --exec wslpath -a -u $workDirectory | Out-String).Trim()
+if ($LASTEXITCODE -ne 0 -or -not $linuxWork.StartsWith('/')) {
+    throw 'Could not resolve the external working directory through WSL Ubuntu.'
 }
 
 function Read-PreviewIdentity {
@@ -25,20 +32,20 @@ function Read-PreviewIdentity {
 }
 
 if ($Mode -eq 'Stop') {
-    & $wslExecutable -d Ubuntu --cd $linuxRoot --exec node scripts/local-dev.mjs stop
+    & $wslExecutable -d Ubuntu --cd $linuxRoot --exec env "WEBSITE_WORK_DIR=$linuxWork" node scripts/local-dev.mjs stop
     if ($LASTEXITCODE -ne 0) { throw 'Could not stop this checkout''s draft preview.' }
     exit 0
 }
 
 if (-not (Read-PreviewIdentity)) {
-    $statusText = & $wslExecutable -d Ubuntu --cd $linuxRoot --exec node scripts/local-dev.mjs status
+    $statusText = & $wslExecutable -d Ubuntu --cd $linuxRoot --exec env "WEBSITE_WORK_DIR=$linuxWork" node scripts/local-dev.mjs status
     if ($LASTEXITCODE -ne 0) { throw 'Could not inspect the draft preview. Check that WSL Node and the website setup are installed.' }
     $status = ($statusText | Out-String) | ConvertFrom-Json
     $serverProcess = $null
     if (-not $status.running) {
         New-Item -ItemType Directory -Path $workDirectory -Force | Out-Null
         # A hidden foreground WSL process has no short background-start timeout.
-        $arguments = @('-d', 'Ubuntu', '--cd', ('"' + $linuxRoot + '"'), '--exec', 'node', 'scripts/local-dev.mjs', 'start')
+        $arguments = @('-d', 'Ubuntu', '--cd', ('"' + $linuxRoot + '"'), '--exec', 'env', ('"WEBSITE_WORK_DIR=' + $linuxWork + '"'), 'node', 'scripts/local-dev.mjs', 'start')
         $serverProcess = Start-Process -FilePath $wslExecutable -ArgumentList $arguments -WindowStyle Hidden -PassThru `
             -RedirectStandardOutput (Join-Path $workDirectory 'local-authoring.log') `
             -RedirectStandardError (Join-Path $workDirectory 'local-authoring-error.log')

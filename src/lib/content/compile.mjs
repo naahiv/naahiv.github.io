@@ -68,11 +68,13 @@ function parseDiagramMeta(node, post) {
     const id = remainder.match(/^#([A-Za-z][A-Za-z0-9_.:-]*)(?:\s|$)/);
     if (id) { attributes.id = id[1]; remainder = remainder.slice(id[0].length); continue; }
     const attribute = remainder.match(/^(caption|description)=(?:"((?:[^"\\]|\\.)*)"|'((?:[^'\\]|\\.)*)')(?=\s|$)/);
-    if (!attribute) fail(post, node, 'TikZ-CD fence attributes must be {#stable-id caption="Optional caption" description="Objects, arrows, and commutativity"}');
+    if (!attribute) fail(post, node, 'TikZ-CD requires {#stable-id}; caption="..." and description="..." are optional');
     attributes[attribute[1]] = (attribute[2] ?? attribute[3]).replace(/\\(["'\\])/g, '$1');
     remainder = remainder.slice(attribute[0].length);
   }
-  if (!attributes.id || !attributes.description?.trim()) fail(post, node, 'TikZ-CD requires a stable #id and an authored description');
+  if (!attributes.id) fail(post, node, 'TikZ-CD requires a stable #id');
+  attributes.caption = attributes.caption?.trim() || undefined;
+  attributes.description = attributes.description?.trim() || undefined;
   return attributes;
 }
 
@@ -222,8 +224,19 @@ const handlers = {
     if (title) heading.push(text(' ('), ...state.all({ children: node.titleChildren }), text(')'));
     heading.push(text('.'));
     if (id) heading.push(element('a', { href: `#${id}`, className: ['block-anchor'], ariaLabel: `Link to ${label}` }, [text('¶')]));
-    const children = [element('p', { className: ['theorem-heading'] }, heading), ...state.all(node)];
-    if (kind === 'proof') children.push(element('span', { className: ['qed'], ariaLabel: 'End of proof' }, [text('□')]));
+    const children = state.all(node);
+    const first = children[0];
+    if (first?.type === 'element' && first.tagName === 'p') {
+      first.children.unshift(element('span', { className: ['theorem-heading'] }, heading), text(' '));
+    } else {
+      children.unshift(element('p', { className: ['theorem-heading'] }, heading));
+    }
+    if (kind === 'proof') {
+      const qed = element('span', { className: ['qed'], ariaLabel: 'End of proof' }, [text('□')]);
+      const last = children.at(-1);
+      if (last?.type === 'element' && last.tagName === 'p') last.children.push(text(' '), qed);
+      else children.push(qed);
+    }
     return element('section', { className: ['math-block', `math-block--${kind}`], ...(id ? { id } : {}), ariaLabel: title ? `${label}: ${title}` : label }, children);
   },
   textDirective(_state, node) {
@@ -234,8 +247,8 @@ const handlers = {
     const { id, number, caption, description, svg } = node.diagram;
     return element('figure', { id, className: ['tikz-diagram'] }, [
       element('div', { className: ['diagram-scroll'], tabIndex: 0, role: 'region', ariaLabel: `Diagram ${number}; scroll horizontally if needed` }, [raw(svg)]),
-      element('figcaption', {}, [element('span', { className: ['diagram-number'] }, [text(`Diagram ${number}. `)]), ...(caption ? state.all({ children: node.diagram.captionChildren }) : [text(description)])]),
-      ...(caption ? [element('p', { className: ['diagram-description'] }, [text(description)])] : []),
+      ...(caption ? [element('figcaption', {}, [element('span', { className: ['diagram-number'] }, [text(`Diagram ${number}. `)]), ...state.all({ children: node.diagram.captionChildren })])] : []),
+      ...(description ? [element('p', { className: ['diagram-description'] }, [text(description)])] : []),
       element('details', { className: ['diagram-source'] }, [element('summary', {}, [text('Diagram TeX source')]), element('pre', {}, [element('code', { className: ['language-tex'] }, [text(node.value)])])]),
     ]);
   },

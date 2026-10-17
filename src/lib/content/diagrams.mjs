@@ -112,8 +112,8 @@ async function inspectToolchain(directory, env) {
 }
 
 /** Parse generated XML, reject active/external content, then namespace every SVG reference. */
-export function prepareSvg(rawSvg, { id, description, hash = '' }) {
-  if (typeof description !== 'string' || !description.trim()) throw new Error('Every diagram needs an authored textual description.');
+export function prepareSvg(rawSvg, { id, description = '', hash = '' }) {
+  if (typeof description !== 'string') throw new Error('Diagram description must be text when supplied.');
   if (/<!DOCTYPE|<!ENTITY/i.test(rawSvg)) throw new Error('SVG document types and entities are forbidden.');
   const errors = [];
   const doc = new DOMParser({ onError: (level, message) => errors.push(`${level}: ${message}`) }).parseFromString(rawSvg, 'image/svg+xml');
@@ -162,25 +162,27 @@ export function prepareSvg(rawSvg, { id, description, hash = '' }) {
   root.setAttribute('height', `${(viewBox[3] + 2 * padding) / 10}em`);
   root.setAttribute('role', 'img');
   root.setAttribute('focusable', 'false');
-  root.setAttribute('aria-labelledby', `${prefix}title ${prefix}description`);
+  root.setAttribute('aria-labelledby', `${prefix}title${description.trim() ? ` ${prefix}description` : ''}`);
   root.setAttribute('fill', 'currentColor');
   root.setAttribute('class', 'tikzcd-svg');
   const title = doc.createElementNS(SVG_NS, 'title');
   title.setAttribute('id', `${prefix}title`);
   title.appendChild(doc.createTextNode('Mathematical diagram'));
-  const desc = doc.createElementNS(SVG_NS, 'desc');
-  desc.setAttribute('id', `${prefix}description`);
-  desc.appendChild(doc.createTextNode(description.trim()));
-  root.insertBefore(desc, root.firstChild);
+  if (description.trim()) {
+    const desc = doc.createElementNS(SVG_NS, 'desc');
+    desc.setAttribute('id', `${prefix}description`);
+    desc.appendChild(doc.createTextNode(description.trim()));
+    root.insertBefore(desc, root.firstChild);
+  }
   root.insertBefore(title, root.firstChild);
   return new XMLSerializer().serializeToString(root);
 }
 
 /** Native TeX source is trusted repository authoring, never a public submission API. */
-export async function compileDiagram({ source, description, id, macros = '', sourcePath = '(inline TikZ-CD diagram)', outputDir, cacheDir = path.resolve('.cache/tikzcd') }) {
+export async function compileDiagram({ source, description = '', id, macros = '', sourcePath = '(inline TikZ-CD diagram)', outputDir, cacheDir = path.resolve('.cache/tikzcd') }) {
   if (typeof source !== 'string' || !source.includes(String.raw`\begin{tikzcd}`) || !source.includes(String.raw`\end{tikzcd}`)) throw new Error(`${sourcePath}: expected a complete \\begin{tikzcd} … \\end{tikzcd} environment.`);
   if (typeof macros !== 'string') throw new Error(`${sourcePath}: diagram macros must be a TeX source string.`);
-  if (typeof description !== 'string' || !description.trim()) throw new Error(`${sourcePath}: every TikZ-CD diagram needs an authored textual description.`);
+  if (typeof description !== 'string') throw new Error(`${sourcePath}: diagram description must be text when supplied.`);
   if (Buffer.byteLength(source) + Buffer.byteLength(macros) > 128 * 1024) throw new Error(`${sourcePath}: diagram plus macros exceeds the 128 KiB authoring limit.`);
   const diagramId = safeId(id);
   const directory = await mkdtemp(path.join(tmpdir(), 'portfolio-tikzcd-'));

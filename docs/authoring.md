@@ -14,7 +14,11 @@ Check the selected branch with `git branch --show-current`. If needed, stop the 
 4. Keep editing the same Markdown file. Windows saves are detected by polling; wait for compilation, then refresh the browser. Macros and genuine TikZ-CD diagrams rebuild too. No commit or push is needed to see an edit.
 5. Double-click **Stop draft preview.cmd** when finished. Stop and restart after changing Git branches, dependencies, or the site configuration. Ordinary post edits do not require a restart.
 
-Starting the shortcut again reuses the matching live server. The background process is hidden; diagnostics are in `work/local-authoring.log` and `work/local-authoring-error.log`. The server binds only to loopback and checks the checkout identity before reuse or shutdown. Port 4323 is separate from the earlier saved static preview on port 4321 and from browser-test ports.
+Starting the shortcut again reuses the matching live server. The background process is hidden; diagnostics are `local-authoring.log` and `local-authoring-error.log` in the external working directory, currently `C:\Users\vihaa\Documents\Generic testing\website-work\naahiv.github.io`. The server binds only to loopback and checks the checkout identity before reuse or shutdown. Port 4323 is separate from the earlier saved static preview on port 4321 and from browser-test ports.
+
+Keep one-off scripts, working/review notes, screenshots, and reports outside the website checkout. Actual post Markdown and website sources stay here. `node scripts/work-directory.mjs` prints the working directory used by the preview and test tools. It defaults to the sibling Generic testing workspace when available, otherwise a checkout-specific directory under the system temporary directory. `WEBSITE_WORK_DIR` can select another absolute path outside the checkout; use the path format of the runtime (Windows for PowerShell helpers, Linux for WSL commands). CI sets it to a runner temporary directory.
+
+Double-click **Watch draft errors.cmd** to show the last 20 error-log lines and watch for new errors while writing. From PowerShell, run `& ".\Watch draft errors.cmd"`. If the preview has never run, the viewer waits for its log to appear. A failed save can leave the browser showing the last successful version; fix the reported error, save, then refresh. Old errors remain in the log, so check their timestamps. Ctrl+C or closing the viewer stops watching without stopping the preview.
 
 This checkout's `node_modules` is installed for **Linux**. Run dependency installation and builds through WSL from a PowerShell terminal in the repository:
 
@@ -177,7 +181,7 @@ References become ordinary links and work without JavaScript. Forward references
 See :ref[diag:evaluation].
 ````
 
-A `tikzcd` fence contains the complete environment, with a required stable `#id` and `description`. `caption` is optional. Caption and description are plain text; explain the objects, arrows, and why the relevant paths commute. Native TeX automatically produces a transparent SVG, while the original source remains in the Markdown. Shared and per-post commands are available.
+A `tikzcd` fence contains the complete environment and a stable `#id`. **Both `caption` and `description` are optional and independent.** For a diagram without either, use an opening fence such as `` ```tikzcd {#diag:evaluation} ``. Omitted or empty fields produce no caption or description text; a description is not substituted for a missing caption. Captions support inline Markdown/math. Descriptions are plain text and, when supplied, also become SVG accessibility descriptions. Native TeX automatically produces a transparent SVG, while the original source remains in the Markdown. Shared and per-post commands are available.
 
 This is real TeX Live TikZ-CD. Hooks, two-headed, equality, dashed, bent, diagonal, and parallel arrows are tested. Do not replace an unsupported special arrow with a different mathematical arrow. The native package profile, installation, cache behavior, isolation, and extension procedure are documented in [diagrams.md](diagrams.md). A TeX error stops the build with the source location and compiler output. Generated SVGs and `.cache/` are disposable; do not edit or commit them as the source.
 

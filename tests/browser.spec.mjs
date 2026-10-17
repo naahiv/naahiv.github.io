@@ -2,15 +2,32 @@ import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import matter from 'gray-matter';
+import { workDirectory } from '../scripts/work-directory.mjs';
 
 const preview = process.env.PREVIEW_URL || 'http://127.0.0.1:4321';
 const production = process.env.PRODUCTION_URL || 'http://127.0.0.1:4322';
 const specimen = '/blog/mathematical-writing-specimen/';
 const shortPost = '/blog/a-small-pullback/';
-const screenshots = path.resolve('work/screenshots');
+const screenshots = path.join(workDirectory, 'screenshots');
 const widths = [320, 390, 768, 1440];
 const canonicalPortfolio = JSON.parse(await fs.readFile('src/data/portfolio.json', 'utf8'));
 const scrollRegions = '.math-scroll, .diagram-scroll';
+
+async function readPostMetadata(directory) {
+  const entries = await fs.readdir(directory, { withFileTypes: true });
+  const metadata = await Promise.all(entries.map(async entry => {
+    const filename = path.join(directory, entry.name);
+    if (entry.isDirectory()) return readPostMetadata(filename);
+    if (!entry.isFile() || !entry.name.endsWith('.md')) return [];
+    const { data } = matter(await fs.readFile(filename, 'utf8'));
+    return [{ slug: data.slug, draft: data.draft !== false }];
+  }));
+  return metadata.flat();
+}
+const sourcePosts = await readPostMetadata('src/content/posts');
+const publishedSlugs = sourcePosts.filter(post => !post.draft).map(post => post.slug).sort();
+const draftSlugs = sourcePosts.filter(post => post.draft).map(post => post.slug).sort();
 
 async function settled(page) {
   await page.evaluate(() => document.fonts.ready);
@@ -64,7 +81,14 @@ test('mathematics, native diagrams, and references survive direct loading', asyn
     const issues = [];
     for (const svg of svgs) {
       if (!svg.querySelector('title')?.textContent.trim()) issues.push('missing SVG title');
-      if (!svg.querySelector('desc')?.textContent.trim()) issues.push('missing SVG description');
+      const accessibleIds = (svg.getAttribute('aria-labelledby') || '').trim().split(/\s+/).filter(Boolean);
+      if (!accessibleIds.length) issues.push('missing accessible SVG name');
+      for (const id of accessibleIds) {
+        const target = Array.from(svg.querySelectorAll('[id]')).find(element => element.id === id);
+        if (!target?.textContent.trim()) issues.push(`missing or empty accessible SVG reference ${id}`);
+      }
+      const description = svg.querySelector('desc');
+      if (description && !description.textContent.trim()) issues.push('empty optional SVG description');
       const box = svg.getBoundingClientRect();
       if (box.width < 30 || box.height < 10) issues.push('invisible SVG');
       for (const element of svg.querySelectorAll('[id]')) {
@@ -188,21 +212,75 @@ test('automated accessibility for portfolio, index, and mathematical article', a
   }
 });
 
-test('draft specimens stay absent from production routes and indexes', async ({ page, request }) => {
-  for (const route of [specimen, shortPost]) {
+test('published posts appear in production routes and all public indexes', async ({ page, request }) => {
+  const searchResponse = await request.get(`${production}/search.json`);
+  expect(searchResponse.status()).toBe(200);
+  const searchEntries = await searchResponse.json();
+  expect(searchEntries.map(entry => entry.slug).sort()).toEqual(publishedSlugs);
+  for (const entry of searchEntries) expect(entry.url).toBe(`/blog/${entry.slug}/`);
+
+  for (const route of ['/blog/', '/blog/archive/']) {
+    const response = await page.goto(`${production}${route}`);
+    expect(response?.status(), route).toBe(200);
+    await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+    const entries = page.locator('[data-post-entry]');
+    expect(await entries.evaluateAll(cards => cards.map(card => card.dataset.slug).sort())).toEqual(publishedSlugs);
+    expect(await entries.locator('h2 a').evaluateAll(links => links.map(link => link.getAttribute('href')).sort()))
+      .toEqual(publishedSlugs.map(slug => `/blog/${slug}/`));
+    await expect(page.locator('.draft-label')).toHaveCount(0);
+  }
+
+  const rssResponse = await request.get(`${production}/rss.xml`);
+  const sitemapResponse = await request.get(`${production}/sitemap.xml`);
+  expect(rssResponse.status()).toBe(200);
+  expect(sitemapResponse.status()).toBe(200);
+  const indexes = await page.evaluate(({ rss, sitemap }) => {
+    const feed = new DOMParser().parseFromString(rss, 'application/xml');
+    const map = new DOMParser().parseFromString(sitemap, 'application/xml');
+    return {
+      errors: feed.querySelectorAll('parsererror').length + map.querySelectorAll('parsererror').length,
+      feedLinks: Array.from(feed.querySelectorAll('item > link'), link => link.textContent).sort(),
+      articleLocations: Array.from(map.querySelectorAll('loc'), location => location.textContent).filter(url => {
+        const parts = new URL(url).pathname.split('/').filter(Boolean);
+        return parts.length === 2 && parts[0] === 'blog' && !['archive', 'tags'].includes(parts[1]);
+      }).sort(),
+    };
+  }, { rss: await rssResponse.text(), sitemap: await sitemapResponse.text() });
+  const canonicalURLs = publishedSlugs.map(slug => `https://naahiv.github.io/blog/${slug}/`);
+  expect(indexes.errors).toBe(0);
+  expect(indexes.feedLinks).toEqual(canonicalURLs);
+  expect(indexes.articleLocations).toEqual(canonicalURLs);
+
+  for (const slug of publishedSlugs) {
+    const route = `/blog/${slug}/`;
+    const response = await page.goto(`${production}${route}`);
+    expect(response?.status(), route).toBe(200);
+    await expect(page.locator('article.prose')).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://naahiv.github.io${route}`);
+    await expect(page.locator('meta[name="robots"][content*="noindex"]')).toHaveCount(0);
+    await expect(page.locator('.draft-label, .specimen-note')).toHaveCount(0);
+    await expect(page.locator('.article-topline')).not.toContainText('Draft preview');
+    await expect(page.locator('.article-topline')).not.toContainText('Development specimen');
+  }
+});
+
+test('every source draft stays absent from production routes and indexes', async ({ page, request }) => {
+  for (const slug of draftSlugs) {
+    const route = `/blog/${slug}/`;
     const response = await request.get(`${production}${route}`);
     expect(response.status(), route).toBe(404);
   }
-  for (const route of ['/blog/', '/rss.xml', '/sitemap.xml', '/search.json']) {
+  for (const route of ['/blog/', '/blog/archive/', '/rss.xml', '/sitemap.xml', '/search.json']) {
     const response = await request.get(`${production}${route}`);
     expect(response.status(), route).toBe(200);
     const text = await response.text();
-    expect(text).not.toContain('mathematical-writing-specimen');
-    expect(text).not.toContain('a-small-pullback');
+    for (const slug of draftSlugs) expect(text, `${slug} in ${route}`).not.toContain(slug);
   }
   await page.goto(`${production}/blog/`);
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-  expect(await page.locator('a[href^="/blog/"]').evaluateAll(links => links.map(link => link.getAttribute('href')))).not.toContain(specimen);
+  const links = await page.locator('a[href^="/blog/"]').evaluateAll(anchors => anchors.map(anchor => anchor.getAttribute('href')));
+  for (const slug of draftSlugs) expect(links).not.toContain(`/blog/${slug}/`);
 });
 
 test('200 percent reflow and enlarged text preserve reading', async ({ page }, testInfo) => {

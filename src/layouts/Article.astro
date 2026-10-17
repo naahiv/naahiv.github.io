@@ -24,7 +24,6 @@ const related = allPosts.filter(p=>p.slug!==post.slug).slice(0,2);
       <article class="prose" aria-label={post.title} set:html={post.html} />
     </div>
     <div class="article-end">
-      <p class="end-mark" aria-hidden="true">∎</p>
       {post.specimen && <p class="specimen-note">This article is a development specimen for the reading and authoring system. It is excluded from the published site.</p>}
       {series.length>1 && <nav class="series-nav" aria-label="Series navigation"><p>{post.series.name}</p><div>{series[index-1] && <a href={series[index-1].url}>← {series[index-1].title}</a>}{series[index+1] && <a href={series[index+1].url}>{series[index+1].title} →</a>}</div></nav>}
       {related.length>0 && <section class="related"><p class="eyebrow">Continue reading</p>{related.map(p=><a href={p.url}>{p.title}<span>→</span></a>)}</section>}

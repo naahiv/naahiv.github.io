@@ -4,12 +4,13 @@ import net from 'node:net';
 import { spawn } from 'node:child_process';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { randomUUID } from 'node:crypto';
+import { workDirectory } from './work-directory.mjs';
 
 if (process.platform !== 'linux') throw new Error('Run this helper through WSL; use Start draft preview.cmd.');
 
 const root = await fs.realpath(path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..'));
 const script = path.join(root, 'scripts/local-dev.mjs');
-const work = path.join(root, 'work');
+const work = workDirectory;
 const lock = path.join(work, 'local-authoring.lock');
 const stateFile = path.join(lock, 'server.json');
 const protocol = 'naahiv-local-authoring-v1';
@@ -35,7 +36,7 @@ async function currentState() {
   try { state = JSON.parse(await fs.readFile(stateFile, 'utf8')); }
   catch (error) {
     if (error.code === 'ENOENT') return null;
-    throw new Error('Cannot read the authoring server record. Check work/local-authoring.lock before retrying.', { cause: error });
+    throw new Error(`Cannot read the authoring server record. Check ${lock} before retrying.`, { cause: error });
   }
   if (state.protocol !== protocol || state.root !== root || !Number.isInteger(state.pid)) {
     throw new Error('The authoring server record belongs to a different checkout; refusing to use it.');
@@ -124,7 +125,7 @@ if (action === 'status') {
     await import(pathToFileURL(path.join(root, 'scripts/prepare.mjs')).href);
     const configPath = path.join(work, 'astro-local.config.mjs');
     const identityJson = JSON.stringify({ ...state, running: true });
-    await fs.writeFile(configPath, `import base from '../astro.config.mjs';
+    await fs.writeFile(configPath, `import base from ${JSON.stringify(pathToFileURL(path.join(root, 'astro.config.mjs')).href)};
 export default {
   ...base,
   server: { ...base.server, host: '127.0.0.1', port: ${port} },

@@ -1,6 +1,6 @@
 # Native TikZ-CD diagrams
 
-Diagrams are compiled from their original TeX during the build. They are genuine TikZ-CD, not KaTeX's simpler `CD` environment or manually exported drawings. Put one picture in each diagram block. The author supplies a stable label and a description of the objects, arrows, and relevant commutativity. See [authoring.md](authoring.md) for the complete post syntax and [math-rendering.md](math-rendering.md) for ordinary equations.
+Diagrams are compiled from their original TeX during the build. They are genuine TikZ-CD, not KaTeX's simpler `CD` environment or manually exported drawings. Put one picture in each diagram block and supply a stable label. Captions and descriptions are optional; either can be supplied independently. See [authoring.md](authoring.md) for the complete post syntax and [math-rendering.md](math-rendering.md) for ordinary equations.
 
 ````markdown
 ```tikzcd {#evaluation caption="Evaluation at one" description="Evaluation at 1 identifies homomorphisms from the integers to A with elements of A."}
@@ -79,7 +79,7 @@ The fixtures cover labels, long labels, superscripts, diagonal arrows, bent arro
 
 ## Output and accessibility
 
-The SVG has a transparent background. The converter emits outlined glyphs, so diagrams do not depend on an external font service, but those glyphs are not selectable or independently meaningful to a screen reader. Every diagram therefore includes an authored `<desc>` and accessible name. The article also exposes the description as ordinary text and preserves the source.
+The SVG has a transparent background. The converter emits outlined glyphs, so diagrams do not depend on an external font service, but those glyphs are not selectable or independently meaningful to a screen reader. Every diagram has the accessible title "Mathematical diagram". An optional authored description adds an SVG `<desc>` and visible explanatory text. Without one, no description is invented. The article preserves the expandable TeX source. A visible caption appears only when `caption` is supplied.
 
 The compiler parses SVG as XML and permits only drawing elements and a fixed set of inert attributes. It rejects scripts, event handlers, foreign content, external references, document types, entities, and broken fragment references. It prefixes **all** internal IDs per diagram and updates `href`, `xlink:href`, and `url(#...)` uses. Two diagrams embedded together are tested for ID collisions and missing glyph references. Four converter units of additional padding protect arrowheads at the SVG boundary.
 
@@ -92,7 +92,7 @@ The wrapper uses 10pt mathematics, and the SVG's dimensions are expressed in `em
 ```js
 await compileDiagram({
   source,             // Original complete tikzcd environment.
-  description,        // Required authored text.
+  description,        // Optional authored text.
   id,                 // Stable semantic identifier.
   macros,             // Shared + post TeX definitions, as a string.
   sourcePath,         // Displayed in every build failure.
