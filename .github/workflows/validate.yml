@@ -19,11 +19,13 @@ jobs:
     env:
       CI: 'true'
       ASTRO_TELEMETRY_DISABLED: '1'
-      WEBSITE_WORK_DIR: ${{ runner.temp }}/website-work
     steps:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
+
+      - name: Keep working files outside the checkout
+        run: echo "WEBSITE_WORK_DIR=$RUNNER_TEMP/website-work" >> "$GITHUB_ENV"
 
       - uses: actions/setup-node@v4
         with:

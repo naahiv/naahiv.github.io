@@ -2,9 +2,11 @@
 
 ## Eight-post publication PR — 2026-10-16
 
-The user approved publication through a PR from `codex/blog-drafts` to `master`. Exterior Powers 1 and 2, Jennings' theorem, Classical Dold–Kan, Vector bundles on the punctured plane, Quillen–Suslin 1 and 2, and Tannakian Reconstruction now have `draft: false`. The two development specimens remain drafts; the separate unfinished `my-first-post` stays untracked and unpublished. The PR also includes the previously reviewed article formatting, optional diagram metadata, and external working-directory changes. Canonical assets and portfolio metadata are unchanged.
+The user approved publication through [PR #2](https://github.com/naahiv/naahiv.github.io/pull/2) from `codex/blog-drafts` to `master`. Exterior Powers 1 and 2, Jennings' theorem, Classical Dold–Kan, Vector bundles on the punctured plane, Quillen–Suslin 1 and 2, and Tannakian Reconstruction now have `draft: false`. The two development specimens remain drafts; the separate unfinished `my-first-post` stays untracked and unpublished. The PR also includes the previously reviewed article formatting, optional diagram metadata, and external working-directory changes. Canonical assets and portfolio metadata are unchanged.
 
 Validation: 33 unit/content tests passed with one optional migration test skipped; all 12 isolated release checks passed; production and preview builds passed; all 57 Chromium/Firefox/WebKit checks passed. Browser checks verify every published route and inclusion in the blog, archive, search, RSS, and sitemap, plus exclusion of every remaining draft. Preservation checks cover all 18 portfolio records and 19 canonical assets. Detailed logs and publication status are in [the external publication record](<C:/Users/vihaa/Documents/Generic testing/website-work/naahiv.github.io/algebra-posts/publication/validation.md>). Next action: review and merge the publication PR after hosted validation; the existing `master` workflow then publishes the site. Earlier entries below record the draft stages.
+
+Hosted validation initially rejected the job-level `runner.temp` expression before starting a job. The work directory is now exported through `GITHUB_ENV` in a runner step, where `RUNNER_TEMP` is available. The publication record tracks the final hosted result.
 
 ## Algebra blog drafts — 2026-10-16
 
