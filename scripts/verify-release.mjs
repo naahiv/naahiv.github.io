@@ -6,6 +6,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { promisify } from 'node:util';
 import { readAssetManifest } from './stage-assets.mjs';
 import { sha256, verifyPreservation } from './verify-preservation.mjs';
+import { externalWorkDirectory } from './work-directory.mjs';
 
 const execute = promisify(execFile);
 const repositoryRoot = fileURLToPath(new URL('../', import.meta.url));
@@ -26,7 +27,7 @@ async function filesIn(directory, prefix = '') {
 /** Exercise first-publication behavior without publishing or touching any real source/output. */
 export async function verifyRelease({ rootDir = repositoryRoot } = {}) {
   const started = performance.now();
-  const workDir = path.join(rootDir, 'work');
+  const workDir = externalWorkDirectory(rootDir);
   await mkdir(workDir, { recursive: true });
   const temporary = await mkdtemp(path.join(workDir, 'release-check-'));
   let success = false;

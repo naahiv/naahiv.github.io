@@ -60,6 +60,53 @@ test('theorem-like blocks share a counter; proofs and named unnumbered blocks do
   assert.match(result.html, /href="#convention"[^>]*>Convention<\/a>/);
 });
 
+test('block labels run into opening prose without moving later paragraphs or display content', async (t) => {
+  const options = await fixture(t, { 'a.md': post('a', String.raw`
+:::theorem[Named result]{#result}
+First statement with $X$.
+
+Second paragraph.
+:::
+
+:::proof
+The proof starts here.
+:::
+
+:::definition{#display-first}
+$$
+X = Y
+$$
+
+Explanation after the display.
+:::
+
+:::remark{#list-first}
+- First item.
+
+Explanation after the list.
+:::
+`) });
+  const [result] = await compilePosts(options);
+  const document = new DOMParser().parseFromString(`<article>${result.html}</article>`, 'text/html');
+  const sections = Array.from(document.getElementsByTagName('section'));
+  const elements = (node) => Array.from(node.childNodes).filter((child) => child.nodeType === 1);
+  const theorem = sections.find((node) => node.getAttribute('id') === 'result');
+  const paragraphs = elements(theorem);
+  assert.deepEqual(paragraphs.map((node) => node.tagName), ['p', 'p']);
+  assert.match(paragraphs[0].textContent, /^Theorem 1 \(Named result\)\.¶ First statement/);
+  assert.equal(paragraphs[0].getElementsByTagName('math').length, 1);
+  assert.equal(paragraphs[1].textContent, 'Second paragraph.');
+  assert.equal(paragraphs[0].getElementsByTagName('a')[0].getAttribute('href'), '#result');
+  const proof = sections.find((node) => node.getAttribute('class').includes('math-block--proof'));
+  assert.equal(elements(proof)[0].textContent, 'Proof. The proof starts here. □');
+  assert.equal(elements(proof)[0].lastChild.getAttribute('aria-label'), 'End of proof');
+  for (const [id, blockTag] of [['display-first', 'div'], ['list-first', 'ul']]) {
+    const section = sections.find((node) => node.getAttribute('id') === id);
+    assert.deepEqual(elements(section).map((node) => node.tagName), ['p', blockTag, 'p']);
+    assert.match(elements(section)[2].textContent, /^Explanation after/);
+  }
+});
+
 test('macro arguments, deliberate overrides, operators, and fresh per-document state', () => {
   const shared = String.raw`\newcommand{\F}{\mathcal{F}}
 \newcommand{\pair}[2]{\langle #1,#2\rangle}

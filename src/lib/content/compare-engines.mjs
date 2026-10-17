@@ -14,8 +14,9 @@ import { DOMParser, XMLSerializer } from '@xmldom/xmldom';
 import MathJax from '@mathjax/src';
 import { compilePosts } from './compile.mjs';
 import { createMathContext } from './macros.mjs';
+import { workDirectory } from '../../../scripts/work-directory.mjs';
 
-const outputDir = path.resolve('work/engine-comparison');
+const outputDir = path.join(workDirectory, 'engine-comparison');
 await fs.mkdir(outputDir, { recursive: true });
 const slug = 'mathematical-writing-specimen';
 const source = await fs.readFile(`src/content/posts/${slug}.md`, 'utf8');

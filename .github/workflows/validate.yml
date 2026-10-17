@@ -24,6 +24,9 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Keep working files outside the checkout
+        run: echo "WEBSITE_WORK_DIR=$RUNNER_TEMP/website-work" >> "$GITHUB_ENV"
+
       - uses: actions/setup-node@v4
         with:
           node-version: 24.19.0
@@ -69,9 +72,9 @@ jobs:
         with:
           name: browser-review-${{ github.sha }}
           path: |
-            work/browser-results/
-            work/browser-report/
-            work/screenshots/
+            ${{ env.WEBSITE_WORK_DIR }}/browser-results/
+            ${{ env.WEBSITE_WORK_DIR }}/browser-report/
+            ${{ env.WEBSITE_WORK_DIR }}/screenshots/
           if-no-files-found: ignore
           retention-days: 14
 

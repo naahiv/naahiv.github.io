@@ -9,6 +9,14 @@ const fixture = (name) => readFile(new URL(`./fixtures/diagrams/${name}.tex`, im
 const description = 'A maps by a hook to B, by a surjection to F(X), and by a dashed diagonal to F(Y). B has a curved return map. Two parallel maps alpha and beta lead from F(X) to F(Y); an equality arrow identifies the lower copy.';
 const minimalSvg = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 20 10"><defs><path id="glyph" d="M0 0L1 1"/><clipPath id="clip"><rect width="20" height="10"/></clipPath></defs><g clip-path="url(#clip)"><use href="#glyph" xlink:href="#glyph"/></g></svg>';
 
+function assertGenericAccessibleTitle(svg) {
+  const title = svg.match(/<title id="([^"]+)">Mathematical diagram<\/title>/);
+  assert.ok(title, 'an undescribed diagram retains its generic accessible title');
+  assert.match(svg, /role="img"/);
+  assert.doesNotMatch(svg, /<desc\b/, 'do not invent an empty or generic description');
+  assert.equal(svg.match(/aria-labelledby="([^"]+)"/)?.[1], title[1], 'accessible naming references only the existing title');
+}
+
 test('SVG is accessible, transparent, padded and consistently namespaces all references', () => {
   const first = prepareSvg(minimalSvg, { id: 'one', description: 'A < B & C' });
   const second = prepareSvg(minimalSvg, { id: 'two', description: 'Second diagram' });
@@ -38,6 +46,24 @@ test('SVG rejects active elements, event attributes, external links, entities an
     '<!DOCTYPE svg [<!ENTITY x SYSTEM "file:///etc/passwd">]>' + minimalSvg,
   ];
   for (const svg of variants) assert.throws(() => prepareSvg(svg, { id: 'unsafe', description: 'Unsafe fixture' }));
+});
+
+test('SVG descriptions are optional and empty descriptions do not create dangling accessible references', () => {
+  for (const options of [{}, { description: '' }, { description: '  \n  ' }]) {
+    assertGenericAccessibleTitle(prepareSvg(minimalSvg, { id: 'optional-description', ...options }));
+  }
+});
+
+test('native diagrams compile from empty caches with omitted and empty descriptions', async (t) => {
+  const directory = await mkdtemp(path.join(tmpdir(), 'diagram-optional-description-'));
+  t.after(() => rm(directory, { recursive: true, force: true }));
+  const source = String.raw`\begin{tikzcd} A \arrow[r] & B \end{tikzcd}`;
+  for (const [name, options] of [['omitted', {}], ['empty', { description: '' }]]) {
+    const result = await compileDiagram({ source, id: name, cacheDir: path.join(directory, name), ...options });
+    assert.equal(result.cacheHit, false, 'exercise the native compiler for each optional-description form');
+    assert.match(result.svg, /<path/);
+    assertGenericAccessibleTitle(result.svg);
+  }
 });
 
 test('native arrow specimen builds from empty cache; cache keys include shared macros', async () => {
@@ -75,14 +101,13 @@ test('native arrow specimen builds from empty cache; cache keys include shared m
   }
 });
 
-test('native failures identify the source and compiler error, and missing semantics fail before compiling', async () => {
+test('native failures identify the source and compiler error and reject multiple pictures', async () => {
   const directory = await mkdtemp(path.join(tmpdir(), 'diagram-failure-'));
   try {
     await assert.rejects(compileDiagram({ source: await fixture('invalid'), description: 'Invalid arrow fixture', id: 'invalid', sourcePath: 'posts/broken/diagram.tex', cacheDir: directory }), /posts\/broken\/diagram\.tex:.*native TikZ-CD compilation failed[\s\S]*Undefined control sequence/);
     if (process.platform !== 'win32') {
       await assert.rejects(compileDiagram({ source: await fixture('forbidden-read'), description: 'Rejected external file read', id: 'forbidden', sourcePath: 'tests/fixtures/diagrams/forbidden-read.tex', cacheDir: directory }), /native TikZ-CD compilation failed[\s\S]*(Not reading from|not found)/);
     }
-    await assert.rejects(compileDiagram({ source: await fixture('arrows'), id: 'missing-description' }), /textual description/);
     await assert.rejects(compileDiagram({ source: `${await fixture('arrows')}\n${await fixture('arrows')}`, description: 'Two pictures in one block', id: 'multiple', sourcePath: 'posts/multiple.md', cacheDir: directory }), /exactly one TeX picture/);
     assert.deepEqual(await readdir(directory), []);
   } finally {

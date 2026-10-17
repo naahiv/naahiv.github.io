@@ -2,6 +2,35 @@
 
 Posts are Markdown files in `src/content/posts/<slug>/index.md`. The folder can also hold images and other post assets. Start with the command below; no layout component needs editing. The complete example in [templates/post.md](../templates/post.md) is compiled by `tests/authoring.test.mjs`, including its native TikZ-CD diagram.
 
+## Windows workflow in this checkout
+
+The original Windows checkout can be edited directly while WSL Ubuntu supplies Linux Node 24.19.0, npm 11, TeX Live, and dvisvgm. No second source checkout or file-copy step is needed. Use **`codex/blog-drafts`** for everyday authoring in this folder; it includes the helpers committed on `codex/local-authoring-setup`. `master` is the published website branch.
+
+Check the selected branch with `git branch --show-current`. If needed, stop the preview and run `git switch codex/blog-drafts` before writing. Keep unfinished posts marked `draft: true`. Commit and push selected post files on this branch to save them to GitHub; these pushes run validation but do not publish the website. Draft source pushed to this public repository is visible on GitHub even though it is excluded from the published blog.
+
+1. In PowerShell, create a post with `npm.cmd run new:post -- my-post --title "My post"`. This starter command uses only standard Node file operations and can run directly on Windows.
+2. Edit `src/content/posts/my-post/index.md` in your usual editor. Replace its instructional example and metadata, and keep `draft: true` while writing.
+3. Double-click **Start draft preview.cmd** in the repository folder. It opens `http://127.0.0.1:4323/blog/`; the draft itself is at `http://127.0.0.1:4323/blog/my-post/`.
+4. Keep editing the same Markdown file. Windows saves are detected by polling; wait for compilation, then refresh the browser. Macros and genuine TikZ-CD diagrams rebuild too. No commit or push is needed to see an edit.
+5. Double-click **Stop draft preview.cmd** when finished. Stop and restart after changing Git branches, dependencies, or the site configuration. Ordinary post edits do not require a restart.
+
+Starting the shortcut again reuses the matching live server. The background process is hidden; diagnostics are `local-authoring.log` and `local-authoring-error.log` in the external working directory, currently `C:\Users\vihaa\Documents\Generic testing\website-work\naahiv.github.io`. The server binds only to loopback and checks the checkout identity before reuse or shutdown. Port 4323 is separate from the earlier saved static preview on port 4321 and from browser-test ports.
+
+Keep one-off scripts, working/review notes, screenshots, and reports outside the website checkout. Actual post Markdown and website sources stay here. `node scripts/work-directory.mjs` prints the working directory used by the preview and test tools. It defaults to the sibling Generic testing workspace when available, otherwise a checkout-specific directory under the system temporary directory. `WEBSITE_WORK_DIR` can select another absolute path outside the checkout; use the path format of the runtime (Windows for PowerShell helpers, Linux for WSL commands). CI sets it to a runner temporary directory.
+
+Double-click **Watch draft errors.cmd** to show the last 20 error-log lines and watch for new errors while writing. From PowerShell, run `& ".\Watch draft errors.cmd"`. If the preview has never run, the viewer waits for its log to appear. A failed save can leave the browser showing the last successful version; fix the reported error, save, then refresh. Old errors remain in the log, so check their timestamps. Ctrl+C or closing the viewer stops watching without stopping the preview.
+
+This checkout's `node_modules` is installed for **Linux**. Run dependency installation and builds through WSL from a PowerShell terminal in the repository:
+
+```powershell
+wsl -d Ubuntu -- npm ci                 # only when dependencies change
+wsl -d Ubuntu -- npm run build:preview  # complete static output including drafts
+wsl -d Ubuntu -- npm run verify         # production build and asset checks
+wsl -d Ubuntu -- npm test
+```
+
+Stop the live preview before these build commands because preparation clears generated files shared by the development server. Use the Start shortcut for everyday drafting. Do not replace Linux dependencies with Windows `npm ci`, or use Windows `npm run dev` with this dependency installation. Neither the shortcuts nor local builds publish the website.
+
 ## Set up the tools
 
 Use Node **24.19.0** and npm 11, then run `npm ci` from the repository root. The lockfile pins JavaScript dependencies. Native diagrams also need `latex`, `kpsewhich`, and `dvisvgm` on `PATH`, with the TeX Live packages listed in [diagrams.md](diagrams.md).
@@ -16,7 +45,7 @@ latex --version
 dvisvgm --version
 ```
 
-On Windows, **WSL2 Ubuntu is the supported route**: install Node 24.19.0 and the tools above inside WSL, then run all commands in the WSL terminal. Keep the checkout in the WSL filesystem for reliable file watching and performance. The browser can open `http://localhost:4321` from Windows.
+On Windows, **WSL2 Ubuntu is the supported route**: install Node 24.19.0 and the tools above inside WSL. A checkout in the WSL filesystem gives the best performance. The prepared Windows checkout instead uses the shortcuts above with polling, so Windows editors can modify the same files reliably. The browser can open the local server from Windows.
 
 The Node commands use cross-platform APIs and do not require shell-specific environment-variable syntax. A native Windows setup needs Node 24.19.0 and TeX Live with its executable directory (usually `C:\texlive\2026\bin\windows`) on `PATH`; a new PowerShell terminal must resolve `node`, `npm`, `latex`, `kpsewhich`, and `dvisvgm`. Native Windows TeX compilation has **not** been verified. Use WSL2 if you need the tested Linux behavior and process resource limits; do not assume an existing LaTeX editor installation includes a working `dvisvgm`.
 
@@ -152,7 +181,7 @@ References become ordinary links and work without JavaScript. Forward references
 See :ref[diag:evaluation].
 ````
 
-A `tikzcd` fence contains the complete environment, with a required stable `#id` and `description`. `caption` is optional. Caption and description are plain text; explain the objects, arrows, and why the relevant paths commute. Native TeX automatically produces a transparent SVG, while the original source remains in the Markdown. Shared and per-post commands are available.
+A `tikzcd` fence contains the complete environment and a stable `#id`. **Both `caption` and `description` are optional and independent.** For a diagram without either, use an opening fence such as `` ```tikzcd {#diag:evaluation} ``. Omitted or empty fields produce no caption or description text; a description is not substituted for a missing caption. Captions support inline Markdown/math. Descriptions are plain text and, when supplied, also become SVG accessibility descriptions. Native TeX automatically produces a transparent SVG, while the original source remains in the Markdown. Shared and per-post commands are available.
 
 This is real TeX Live TikZ-CD. Hooks, two-headed, equality, dashed, bent, diagonal, and parallel arrows are tested. Do not replace an unsupported special arrow with a different mathematical arrow. The native package profile, installation, cache behavior, isolation, and extension procedure are documented in [diagrams.md](diagrams.md). A TeX error stops the build with the source location and compiler output. Generated SVGs and `.cache/` are disposable; do not edit or commit them as the source.
 
@@ -192,7 +221,7 @@ npm run test:browser
 
 The suite starts the draft preview on port 4321 and production preview on port 4322. Leave both ports free; an existing production server on 4321 would serve the wrong site to draft tests. See [browser-review.md](browser-review.md) for the suite and known manual limits.
 
-Work stays on `codex/math-blog-revamp`. Building, previewing, and changing draft status do not authorize merging into `master`, changing GitHub Pages settings, or deploying. `dist/` is production build output; `dist-preview/` contains development drafts. Neither is canonical source.
+Work on a `codex/` development branch. Building, previewing, and changing draft status do not authorize merging into `master`, changing GitHub Pages settings, or deploying. An approved merge into `master` triggers publication automatically. `dist/` is production build output; `dist-preview/` contains development drafts. Neither is canonical source.
 
 ## Replace a portfolio PDF
 

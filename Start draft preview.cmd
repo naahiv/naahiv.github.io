@@ -1,0 +1,3 @@
+@echo off
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0scripts\local-authoring.ps1" -Mode Start %*
+if errorlevel 1 pause

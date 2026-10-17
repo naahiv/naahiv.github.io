@@ -1,4 +1,6 @@
 import { defineConfig } from '@playwright/test';
+import path from 'node:path';
+import { workDirectory } from './scripts/work-directory.mjs';
 
 // Build the draft and production outputs first; this suite starts their servers.
 // Separate origins make a forgotten production draft exclusion observable.
@@ -11,8 +13,8 @@ export default defineConfig({
   workers: process.env.CI ? 3 : 4,
   timeout: 45_000,
   expect: { timeout: 8_000 },
-  outputDir: 'work/browser-results',
-  reporter: [['list'], ['html', { outputFolder: 'work/browser-report', open: 'never' }]],
+  outputDir: path.join(workDirectory, 'browser-results'),
+  reporter: [['list'], ['html', { outputFolder: path.join(workDirectory, 'browser-report'), open: 'never' }]],
   use: {
     baseURL: process.env.PREVIEW_URL || 'http://127.0.0.1:4321',
     viewport: { width: 1440, height: 1000 },

@@ -49,7 +49,7 @@ rest of the site build. KaTeX additionally needs its self-hosted CSS/fonts;
 the SVG comparison embeds its glyph paths. Both engines are viable here.
 KaTeX provides a smaller result for this supported notation profile while
 the separate semantic reference layer supplies the document functionality.
-Generated evidence is `work/engine-comparison/metrics.json` and the two full
+Generated evidence is `engine-comparison/metrics.json` under the external directory printed by `node scripts/work-directory.mjs`, and the two full
 article HTML pages; rerun the comparison command to reproduce it.
 The comparison pages were inspected at 320, 390, and 1440 CSS pixels with no
 page overflow and no failed font requests. Twelve retained desktop/phone
@@ -192,8 +192,8 @@ descriptive prose title and summary. Captions support inline Markdown/math;
 diagram descriptions stay authored plain language explaining objects, arrows,
 and commutativity.
 
-KaTeX provides MathML alongside its visual HTML. Native SVGs contain an
-authored title and description and retain an expandable TeX source. These
+KaTeX provides MathML alongside its visual HTML. Native SVGs contain a
+generic title and an optional authored description, and retain an expandable TeX source. These
 are useful foundations, not substitutes for testing with an actual screen
 reader. Automated axe and browser checks are reported separately from any
 manual assistive-technology verification.
@@ -209,7 +209,7 @@ npm run build:preview
 npm run test:browser
 ```
 
-The comparison's generated files belong in ignored `work/`, not the published
+The comparison's generated files belong in the external working directory, not the published
 site. To extend the profile, add a representative source specimen and a
 focused regression, run both math and native tests where relevant, inspect
 desktop and narrow-screen output, then update this guide. Unsupported complete

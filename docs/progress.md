@@ -1,5 +1,73 @@
 # Implementation progress
 
+## Eight-post publication PR — 2026-10-16
+
+The user approved publication through [PR #2](https://github.com/naahiv/naahiv.github.io/pull/2) from `codex/blog-drafts` to `master`. Exterior Powers 1 and 2, Jennings' theorem, Classical Dold–Kan, Vector bundles on the punctured plane, Quillen–Suslin 1 and 2, and Tannakian Reconstruction now have `draft: false`. The two development specimens remain drafts; the separate unfinished `my-first-post` stays untracked and unpublished. The PR also includes the previously reviewed article formatting, optional diagram metadata, and external working-directory changes. Canonical assets and portfolio metadata are unchanged.
+
+Validation: 33 unit/content tests passed with one optional migration test skipped; all 12 isolated release checks passed; production and preview builds passed; all 57 Chromium/Firefox/WebKit checks passed. Browser checks verify every published route and inclusion in the blog, archive, search, RSS, and sitemap, plus exclusion of every remaining draft. Preservation checks cover all 18 portfolio records and 19 canonical assets. Detailed logs and publication status are in [the external publication record](<C:/Users/vihaa/Documents/Generic testing/website-work/naahiv.github.io/algebra-posts/publication/validation.md>). Next action: review and merge the publication PR after hosted validation; the existing `master` workflow then publishes the site. Earlier entries below record the draft stages.
+
+Hosted validation initially rejected the job-level `runner.temp` expression before starting a job. The work directory is now exported through `GITHUB_ENV` in a runner step, where `RUNNER_TEMP` is available. The publication record tracks the final hosted result.
+
+## Algebra blog drafts — 2026-10-16
+
+Added six unpublished posts on `codex/blog-drafts`: Jennings’ theorem; the classical Dold–Kan correspondence for abelian groups; vector bundles on the punctured affine plane; the two Quillen–Suslin proof parts (Serre’s reduction and Vaserstein’s proof); and Tannakian Reconstruction for Tensor Categories. Source language, notation, and structure are retained, with mathematical gaps repaired, the omitted Horrocks/PID arguments supplied, and the Tannakian theorem hypotheses/examples corrected. The user explicitly asked to keep the completed PID case. Original TeX/PDFs and earlier posts were not edited. Detailed source provenance, corrections, independent reviews, and logs are in [the external validation note](<C:/Users/vihaa/Documents/Generic testing/website-work/naahiv.github.io/algebra-posts/validation.md>).
+
+Validation: 33 tests passed, one optional migration test skipped; draft build and production/preservation checks passed. All six pages passed screenshot-free browser checks at desktop and phone widths, including math font sizes, references, and draft exclusion from production routes/feeds/search/sitemap. `git diff --check` passes. Local preview restored at `http://127.0.0.1:4323/blog/`. Nothing committed, pushed, or published. Next action: user review of the six drafts.
+
+## Working files relocated — 2026-10-16
+
+At the user's request, ancillary working files now live outside the website checkout in `C:\Users\vihaa\Documents\Generic testing\website-work\naahiv.github.io`. Moved all 31 files from `work/` and the Exterior Powers review note, verifying SHA-256 hashes. The three existing post Markdown files were not changed. The preference is recorded in `AGENTS.md` and the designated memory-notes folder. Historical `work/` evidence paths below now refer to this external directory.
+
+`scripts/work-directory.mjs` supplies the external path for preview logs/runtime state, browser reports/screenshots, release-check scratch files, and engine-comparison output. The preview/error-log shortcuts and CI artifact paths use it. The actual website sources and normal build outputs retain their established locations. Verified matching Windows/WSL output paths, rejection of destinations inside the checkout, browser report configuration, JavaScript/PowerShell syntax, unchanged post hashes, and both live draft routes (HTTP 200). The preview restarts and Start safely reuses it; `work/` is not recreated. `git diff --check` passes. Relocation verification and detailed draft notes are external; next action is to review the unchanged drafts.
+
+## Exterior Powers drafts — 2026-10-16
+
+Both unpublished drafts remain on `codex/blog-drafts`: `src/content/posts/exterior-powers-1/index.md` contains §1.1–1.2 before Classical applications, and `src/content/posts/exterior-powers-2/index.md` contains all of §2. The original TeX was not edited. Source provenance, mathematical corrections/deferred points, and verification details are in [the external review notes](<C:/Users/vihaa/Documents/Generic testing/website-work/naahiv.github.io/exterior-powers-review/review-notes.md>); screenshots and the browser report are alongside them.
+
+Prior validation: 33 tests passed, one optional migration test skipped; complete draft and production/preservation builds passed; 24 targeted browser combinations passed. The site estimates 23 and 22 minutes of reading. Nothing was committed, pushed, or published. Local preview: `http://127.0.0.1:4323/blog/`.
+
+## Diagram spacing refinement — 2026-10-16
+
+Diagrams now use the same 0.6em outer spacing as displayed equations, and immediately preceding paragraphs use a matching bottom margin so margin collapse cannot preserve the larger gap. Diagram scroll padding is reduced from 14px to 2px vertically; the TeX source disclosure has a 4px top margin and no bottom margin. SVG dimensions, protective internal padding, and horizontal scrolling are unchanged.
+
+Verified in the running local draft: the gap from the preceding paragraph's box to the SVG box decreased from 52px to about 13px, and the gap after the source control decreased from 38px to about 11px. Visually checked the diagram and adjacent paragraphs (`work/tighter-diagram-spacing.png`); `git diff --check` passed. This CSS-only adjustment updates the live preview immediately. The user's draft and macros were not edited. Changes remain local for review.
+
+## Optional diagram metadata — 2026-10-16
+
+TikZ-CD captions and descriptions are now independently optional, including empty values. A stable `#id` is still required. Omitted metadata creates no caption or description paragraph, and no description is substituted for a missing caption. SVGs retain a generic accessible title; authored descriptions add a `<desc>` and its corresponding accessible reference only when present. Native TeX compilation, SVG sanitization, numbering, references, and source disclosure are retained. The authoring and diagram guides describe the updated syntax.
+
+All 12 focused diagram/compiler tests passed in WSL, including native compilation with omitted/empty descriptions, all four caption/description combinations, valid accessible references, and required stable IDs. JavaScript syntax checks and `git diff --check` passed. The browser assertion now permits optional descriptions; the full browser suite was not rerun. Restarted the local draft preview and visually verified the user's diagram without a description (`work/optional-diagram-description.png`). Removed only the stray `#desc` token from that draft's diagram fence, retaining its existing ID and caption. Changes remain local on `codex/blog-drafts`.
+
+## Error-log shortcut — 2026-10-16
+
+Added `Watch draft errors.cmd` in the original checkout. It opens a live PowerShell view of this checkout's error log, shows the last 20 lines with UTF-8 decoding, and waits for the log if the preview has not created it yet. The viewer explains timestamps and that fixing a post does not erase older errors. Closing it leaves the preview running. Usage is documented in [authoring.md](authoring.md).
+
+## Article formatting update — 2026-10-16
+
+On `codex/blog-drafts`, removed the decorative square at the end of articles. Theorem-like labels now run into the opening paragraph; theorem/definition labels remain bold and proof labels italic. Numbering, named titles, permalinks, and proof-ending squares are retained. Lists, displays, and subsequent paragraphs keep their original block structure.
+
+Four focused compiler/reference tests passed, including a new regression check for run-in labels and list/display-first blocks. The running local preview was restarted to load the compiler changes, and the user's existing draft was visually checked: labels run into the text and the article-end marker is absent. The user's untracked `my-first-post` source was not edited. Changes are local for review; nothing has been published. Preview evidence is in ignored `work/run-in-labels.png`.
+
+Follow-up: the proof-ending square is now inside the final paragraph, so it sits at the right edge of the last text line when space permits and floats below if necessary. Proofs ending in block content retain their existing fallback. Both focused proof/numbering tests passed, and the user's closing sentence was visually verified in the running preview (`work/qed-last-line.png`).
+
+Spacing refinement: theorem-like blocks use 1.6em outer spacing (previously 1.8em), while a statement immediately followed by its proof uses a 0.6em gap. Both adjoining margins are reduced so margin collapse cannot preserve the larger gap. Visually checked in the live draft (`work/tighter-proof-spacing.png`); ordinary paragraph line height is unchanged.
+
+Displayed equations now use the same 0.6em surrounding margin, with internal vertical padding reduced from 12px to 2px. Adjacent paragraph margins and displays with reference links are handled explicitly, preventing compounded gaps. Visually checked against the user's new Background paragraph in the live draft (`work/tighter-equation-spacing.png`); the user's prose and macro edits were preserved.
+
+## Local authoring setup — 2026-10-16
+
+The redesigned website is published at `https://naahiv.github.io/` from merge `b6ac703d850b96a85d25cb4acf98353e229ce45f` ([successful publication](https://github.com/naahiv/naahiv.github.io/actions/runs/38981145193)). The earlier preparation and Cloud records below are historical.
+
+The original Windows checkout at `C:\Users\vihaa\Documents\naahiv.github.io` was fast-forwarded to that release, then switched to local branch `codex/local-authoring-setup`. WSL Ubuntu now has checksum-verified Node 24.19.0/npm 11.17.0, TeX Live 2025 with the required packages, dvisvgm 3.6, and Poppler. Locked Linux dependencies were installed in this checkout. The native Windows MiKTeX installation was not changed.
+
+`Start draft preview.cmd` and `Stop draft preview.cmd` run the live authoring server for this same Windows folder through WSL, on `http://127.0.0.1:4323/blog/`. Polling detects Windows saves. The helpers reuse the correct server before touching generated files and validate process identity before shutdown. Logs and runtime configuration are ignored under `work/`. The older shortcut in Generic testing now forwards to this live preview.
+
+Verification: 28 unit/content/native-diagram tests passed, with the intentionally optional frozen migration test skipped. A newly created temporary draft rendered with KaTeX and real TikZ-CD. A Windows save plus a local macro change updated the article and changed its generated diagram within 2.4 seconds using the same running server. Start reuse, deleting the temporary draft, and Stop were verified. Both the complete draft build and production build passed preservation checks for 18 records and all 19 canonical assets, including 17 PDFs. The temporary test draft was removed.
+
+Daily workflow: work on `codex/blog-drafts` in the original Windows folder, create a draft with `npm.cmd run new:post -- my-post --title "My post"`, edit its `src/content/posts/my-post/index.md`, and use the Start shortcut. Stop before branch switches or separate builds. Detailed Windows instructions are at the beginning of [authoring.md](authoring.md). The setup is retained on `codex/local-authoring-setup`; the writing branch starts from the same setup commit. The user authorized committing and pushing this setup and preparing the authoring branch. Only `master` publishes the website.
+
+Final setup review: JavaScript and PowerShell helper syntax checks and `git diff --check` passed. Both local previews were stopped at the user's request. Next action: start the draft preview when ready to write; no setup or deployment action is needed.
+
 ## Publication preparation — 2026-10-16
 
 The user approved the reviewed website and requested publication. The reviewed homepage, disabled resume controls, blog invitation, and portfolio categories below are included in this release. A fresh GitHub inspection confirmed the existing live site at `2023f42de108f45f50807016494402ad7212fd35`, legacy Pages `master:/`, with the `github-pages` environment already restricted to the `master` branch.
