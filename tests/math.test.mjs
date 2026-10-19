@@ -107,6 +107,123 @@ Explanation after the list.
   }
 });
 
+test('collapsible blocks expose their label separately and honor both initial states for every kind', async (t) => {
+  const kinds = ['theorem', 'lemma', 'proposition', 'corollary', 'definition', 'remark', 'example', 'question', 'proof'];
+  const states = [['collapsible', true], ['collapsed', false], ['collapsible collapsed', false]];
+  const body = kinds.flatMap((kind) => states.map(([flags], index) => `:::${kind}{#${kind}-${index} ${flags}}\nBody for ${kind}.\n:::`)).join('\n\n');
+  const options = await fixture(t, { 'a.md': post('a', `${body}\n\n:::remark{#ordinary}\nOrdinary body.\n:::`) });
+  const [result] = await compilePosts(options);
+  const document = new DOMParser().parseFromString(`<article>${result.html}</article>`, 'text/html');
+  const disclosures = Array.from(document.getElementsByTagName('details'));
+  assert.equal(disclosures.length, kinds.length * states.length);
+  for (const kind of kinds) {
+    for (const [index, [, open]] of states.entries()) {
+      const disclosure = disclosures.find((node) => node.getAttribute('id') === `${kind}-${index}`);
+      assert(disclosure, `${kind} supports ${states[index][0]}`);
+      assert.equal(disclosure.hasAttribute('open'), open);
+      assert(disclosure.getAttribute('class').split(/\s+/).includes('math-block--collapsible'));
+      const children = Array.from(disclosure.childNodes).filter((node) => node.nodeType === 1);
+      assert.equal(children[0].tagName, 'summary');
+      assert.match(children[0].textContent, new RegExp(`^${kind[0].toUpperCase()}${kind.slice(1)}`));
+      assert.doesNotMatch(children[0].textContent, /Body for/);
+      assert.equal(children[0].getElementsByTagName('a')[0].getAttribute('href'), `#${kind}-${index}`);
+      assert.equal(children[1].getAttribute('class'), 'math-block-body');
+      assert.match(children[1].textContent, new RegExp(`^Body for ${kind}\\.`));
+    }
+  }
+  const ordinary = Array.from(document.getElementsByTagName('section')).find((node) => node.getAttribute('id') === 'ordinary');
+  assert(ordinary, 'unflagged blocks retain their section structure');
+  assert.match(ordinary.getElementsByTagName('p')[0].textContent, /^Remark 25\.¶ Ordinary body\./);
+});
+
+test('collapsed rich content retains numbering, references, escaped titles, and nested proof content', async (t) => {
+  const options = await fixture(t, {
+    'a.md': post('a', String.raw`:ref[clarification] and :ref[next].
+
+::::remark[**Clarification** for $X$ & "quoted" &lt;tag&gt;]{#clarification collapsed}
+First paragraph with $X$.
+
+Second paragraph.
+
+- A list item with :ref[next].
+
+$$
+X = Y
+\label{eq:inside}
+$$
+
+:::proof[The details]{#nested-proof collapsed}
+The nested proof uses :ref[eq:inside].
+:::
+::::
+
+:::theorem{#next}
+The following theorem.
+:::`),
+    'b.md': post('b', ':ref[a#clarification] and :ref[a#eq:inside].'),
+  });
+  const results = await compilePosts(options);
+  const result = results.find((entry) => entry.slug === 'a');
+  const document = new DOMParser().parseFromString(`<article>${result.html}</article>`, 'text/html');
+  const disclosure = Array.from(document.getElementsByTagName('details')).find((node) => node.getAttribute('id') === 'clarification');
+  const [summary, body] = Array.from(disclosure.childNodes).filter((node) => node.nodeType === 1);
+  assert.equal(summary.getElementsByTagName('strong')[0].textContent, 'Clarification');
+  assert.equal(summary.getElementsByTagName('math').length, 1);
+  assert.match(summary.textContent, /& "quoted" <tag>/);
+  assert.equal(document.getElementsByTagName('tag').length, 0, 'title text cannot introduce HTML elements');
+  assert.doesNotMatch(summary.textContent, /First paragraph|Second paragraph|list item|nested proof/);
+  assert.deepEqual(Array.from(body.childNodes).filter((node) => node.nodeType === 1).map((node) => node.tagName), ['p', 'p', 'ul', 'div', 'details']);
+  const proof = body.getElementsByTagName('details')[0];
+  assert.equal(proof.getAttribute('id'), 'nested-proof');
+  assert.doesNotMatch(proof.getElementsByTagName('summary')[0].textContent, /□|nested proof uses/);
+  assert.equal(Array.from(proof.getElementsByTagName('span')).filter((node) => node.getAttribute('aria-label') === 'End of proof').length, 1);
+  assert.deepEqual(result.refs.filter((entry) => ['remark', 'theorem'].includes(entry.kind)).map((entry) => entry.number), [1, 2]);
+  assert.match(result.html, /href="#clarification"[^>]*>Remark 1<\/a>/);
+  assert.match(result.html, /href="#next"[^>]*>Theorem 2<\/a>/);
+  assert.match(result.html, /href="#eq:inside"[^>]*>Equation \(1\)<\/a>/);
+  assert.match(results.find((entry) => entry.slug === 'b').html, /href="\/blog\/a\/#clarification"[^>]*>Remark 1<\/a>/);
+  assert.match(results.find((entry) => entry.slug === 'b').html, /href="\/blog\/a\/#eq:inside"[^>]*>Equation \(1\)<\/a>/);
+});
+
+test('collapsible proofs keep the QED in the body for paragraph and display endings', async (t) => {
+  const options = await fixture(t, { 'a.md': post('a', String.raw`
+:::proof{#paragraph-proof collapsible}
+The final sentence.
+:::
+
+:::proof{#display-proof collapsed}
+$$
+X = X
+$$
+:::
+`) });
+  const [result] = await compilePosts(options);
+  const document = new DOMParser().parseFromString(`<article>${result.html}</article>`, 'text/html');
+  for (const proof of Array.from(document.getElementsByTagName('details'))) {
+    const [summary, body] = Array.from(proof.childNodes).filter((node) => node.nodeType === 1);
+    assert.doesNotMatch(summary.textContent, /□/);
+    const qed = Array.from(body.getElementsByTagName('span')).filter((node) => node.getAttribute('aria-label') === 'End of proof');
+    assert.equal(qed.length, 1);
+    assert.equal(qed[0].parentNode, proof.getAttribute('id') === 'paragraph-proof' ? body.getElementsByTagName('p')[0] : body);
+    assert.equal(qed[0].parentNode.lastChild, qed[0]);
+  }
+});
+
+test('collapsed content still rejects invalid mathematics and unresolved references', async (t) => {
+  for (const [body, expected] of [
+    [String.raw`:::remark{collapsed}
+$\thisCommandDoesNotExist{x}$
+:::`, /Invalid mathematics.*Undefined control sequence/s],
+    [String.raw`:::remark[An invalid $\thisCommandDoesNotExist$ title]{collapsed}
+Body.
+:::`, /Invalid mathematics.*Undefined control sequence/s],
+    [':::remark{collapsed}\n:ref[missing]\n:::', /Unresolved reference "missing"/],
+  ]) {
+    const options = await fixture(t, { 'a.md': post('a', body) });
+    await assert.rejects(compilePosts(options), expected);
+  }
+});
+
 test('macro arguments, deliberate overrides, operators, and fresh per-document state', () => {
   const shared = String.raw`\newcommand{\F}{\mathcal{F}}
 \newcommand{\pair}[2]{\langle #1,#2\rangle}

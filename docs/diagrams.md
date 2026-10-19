@@ -47,6 +47,8 @@ Verified Cloud tool versions on 16 October 2026:
 
 Installed versions in CI may differ with the OS release. The build records native version output and package hashes in the cache key, so incompatible generated assets cannot be silently reused across these changes.
 
+Quiver 1.6.0 is bundled unchanged under `src/lib/content/tex/quiver/` with its MIT license and pinned upstream revision. It supplies `curve`, `between`, and Quiver's additional arrow styles, using the system `spath3` library from `texlive-pictures`. No separate Quiver installation is needed. This is independent of the public `quiver-macros.tex` notation asset. See the [bundled package provenance](../src/lib/content/tex/quiver/README.md).
+
 ## Tested wrapper and driver
 
 The starting `\usepackage[dvisvgm]{tikz}` suggestion in the handoff was tested and fails with this PGF version: TikZ does not accept that package option. The working wrapper selects the PGF driver explicitly **before** loading TikZ, and supplies `dvisvgm` as a document option for graphics/color packages:
@@ -57,6 +59,7 @@ The starting `\usepackage[dvisvgm]{tikz}` suggestion in the handoff was tested a
 \usepackage{tikz}
 \usepackage{tikz-cd}
 \usepackage{amsmath,amssymb,mathtools,mathrsfs}
+\usepackage{quiver}
 \usetikzlibrary{arrows.meta,decorations.markings,calc}
 % Shared and post macro definitions are inserted here.
 \begin{document}
@@ -76,6 +79,8 @@ The initial `--bbox=min` smoke test produced excess whitespace with nested TikZ 
 No PDF converter or Ghostscript path is required by this tested DVI profile. A package that genuinely requires LuaLaTeX/PDF must be introduced as a separate tested profile; no such support is currently claimed.
 
 The fixtures cover labels, long labels, superscripts, diagonal arrows, bent arrows, parallel arrows, hooks, two-headed arrows, dashed arrows, equality arrows, blackboard bold, calligraphic and script letters, fractions, and shared commands with arguments. The exact TeX lives in `tests/fixtures/diagrams/`. The article specimen also displays the same notation in surrounding equations and a diagram for visual comparison.
+
+The `quiver-modification.tex` fixture preserves an exported diagram with curves, proportional shortening, shifted double arrows, and arrows between arrows. Its original display delimiters are retained. Tests compile it from an empty cache, check accessible sanitized output, reuse the cache, and rebuild reproducibly.
 
 ## Output and accessibility
 
@@ -102,9 +107,9 @@ await compileDiagram({
 // => { svg, hash, cacheHit, outputPath, versions, profile }
 ```
 
-The cache key includes diagram source, macro source, wrapper, package profile, compiler/converter/version output, selected package content hashes, and converter options. Descriptions and per-embedding IDs are applied after cache lookup, so changing accessibility text or embedding the same diagram twice does not require recompilation. The cache and generated assets are disposable build output, never canonical source.
+The cache key includes diagram source, macro source, wrapper, package profile, compiler/converter/version output, selected package content hashes (including the bundled Quiver bytes and system `spath3` files), and converter options. Descriptions and per-embedding IDs are applied after cache lookup, so changing accessibility text or embedding the same diagram twice does not require recompilation. The cache and generated assets are disposable build output, never canonical source.
 
-Every compilation uses a fresh temporary working directory containing only its generated wrapper. Processes receive an allowlisted tool-path/library environment rather than the parent environment: deployment credentials and proxy tokens are not passed through. Shell escape is disabled; TeX's paranoid input/output modes forbid absolute and parent-directory reads/writes; user TeX directories point inside the temporary directory. A fixture confirms rejection of an absolute file read. The directory is removed on success and failure.
+Every compilation uses a fresh temporary working directory containing its generated wrapper and the bundled `quiver.sty`. Processes receive an allowlisted tool-path/library environment rather than the parent environment: deployment credentials and proxy tokens are not passed through. Shell escape is disabled; TeX's paranoid input/output modes forbid absolute and parent-directory reads/writes; user TeX directories point inside the temporary directory. A fixture confirms rejection of an absolute file read. The directory is removed on success and failure.
 
 Linux/WSL adds `prlimit` bounds: 1 GiB address space, 20 CPU seconds, 16 MiB per written file, and 64 open file descriptors. Each process also has a wall-clock deadline (30 seconds for LaTeX, 15 for dvisvgm) and a 2 MiB captured-output bound. Source plus macros is limited to 128 KiB. Native errors fail the build with the original source path and useful compiler output.
 

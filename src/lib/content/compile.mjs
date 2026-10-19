@@ -26,7 +26,7 @@ export const postSchema = z.object({
   macros: z.string().default(''),
 }).strict().refine((data) => !data.specimen || data.draft, { message: 'Development specimens must remain drafts', path: ['draft'] });
 
-const theoremNames = Object.fromEntries(['theorem', 'lemma', 'proposition', 'corollary', 'definition', 'remark', 'example', 'question', 'proof'].map((name) => [name, name[0].toUpperCase() + name.slice(1)]));
+const theoremNames = Object.fromEntries(['theorem', 'lemma', 'proposition', 'corollary', 'definition', 'remark', 'example', 'question', 'claim','motivation', 'observation', 'proof'].map((name) => [name, name[0].toUpperCase() + name.slice(1)]));
 const parser = unified().use(remarkParse).use(remarkMath).use(remarkDirective).use(remarkGfm);
 const element = (tagName, properties = {}, children = []) => ({ type: 'element', tagName, properties, children });
 const text = (value) => ({ type: 'text', value });
@@ -104,7 +104,9 @@ export function collectPostStructure(post, registry) {
       const unnumbered = node.name === 'proof' || Object.hasOwn(node.attributes || {}, 'unnumbered');
       const number = unnumbered ? undefined : ++theoremNumber;
       const label = `${theoremNames[node.name]}${number ? ` ${number}` : ''}`;
-      node.block = { label, number, id: node.attributes?.id, title: nodeText(titleNode || {}).trim(), kind: node.name };
+      const collapsed = Object.hasOwn(node.attributes || {}, 'collapsed');
+      const collapsible = collapsed || Object.hasOwn(node.attributes || {}, 'collapsible');
+      node.block = { label, number, id: node.attributes?.id, title: nodeText(titleNode || {}).trim(), kind: node.name, collapsible, collapsed };
       if (node.block.id) registry.addLabel(post, node.block.id, { kind: node.name, text: number ? label : node.block.title || label, number }, node);
     }
     if (node.type === 'math' || node.type === 'inlineMath') {
@@ -219,17 +221,19 @@ const handlers = {
     return node.mathReferences?.length ? element('div', { className: ['display-with-references'] }, [display, ...formulaReferenceLinks(node)]) : display;
   },
   containerDirective(state, node) {
-    const { kind, label, id, title } = node.block;
+    const { kind, label, id, title, collapsible, collapsed } = node.block;
     const heading = [element('span', { className: ['theorem-label'] }, [text(label)])];
     if (title) heading.push(text(' ('), ...state.all({ children: node.titleChildren }), text(')'));
-    heading.push(text('.'));
+    if (!collapsible) heading.push(text('.'));
     if (id) heading.push(element('a', { href: `#${id}`, className: ['block-anchor'], ariaLabel: `Link to ${label}` }, [text('¶')]));
     const children = state.all(node);
-    const first = children[0];
-    if (first?.type === 'element' && first.tagName === 'p') {
-      first.children.unshift(element('span', { className: ['theorem-heading'] }, heading), text(' '));
-    } else {
-      children.unshift(element('p', { className: ['theorem-heading'] }, heading));
+    if (!collapsible) {
+      const first = children[0];
+      if (first?.type === 'element' && first.tagName === 'p') {
+        first.children.unshift(element('span', { className: ['theorem-heading'] }, heading), text(' '));
+      } else {
+        children.unshift(element('p', { className: ['theorem-heading'] }, heading));
+      }
     }
     if (kind === 'proof') {
       const qed = element('span', { className: ['qed'], ariaLabel: 'End of proof' }, [text('□')]);
@@ -237,7 +241,13 @@ const handlers = {
       if (last?.type === 'element' && last.tagName === 'p') last.children.push(text(' '), qed);
       else children.push(qed);
     }
-    return element('section', { className: ['math-block', `math-block--${kind}`], ...(id ? { id } : {}), ariaLabel: title ? `${label}: ${title}` : label }, children);
+    const properties = { className: ['math-block', `math-block--${kind}`, ...(collapsible ? ['math-block--collapsible'] : [])], ...(id ? { id } : {}), ariaLabel: title ? `${label}: ${title}` : label };
+    return collapsible
+      ? element('details', { ...properties, open: !collapsed }, [
+        element('summary', { className: ['theorem-heading'] }, heading),
+        element('div', { className: ['math-block-body'] }, children),
+      ])
+      : element('section', properties, children);
   },
   textDirective(_state, node) {
     return referenceAnchor(node.reference);

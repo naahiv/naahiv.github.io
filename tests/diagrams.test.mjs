@@ -101,6 +101,34 @@ test('native arrow specimen builds from empty cache; cache keys include shared m
   }
 });
 
+test('Quiver exports preserve curved, shortened arrows between arrows through native compilation and cache reuse', async (t) => {
+  const directory = await mkdtemp(path.join(tmpdir(), 'diagram-quiver-'));
+  t.after(() => rm(directory, { recursive: true, force: true }));
+  const options = {
+    source: await fixture('quiver-modification'),
+    id: 'quiver-modification',
+    sourcePath: 'tests/fixtures/diagrams/quiver-modification.tex',
+    cacheDir: directory,
+    description: 'Two functors F and F prime from C to C prime, two transformations alpha and beta between them, and a modification f from alpha to beta.',
+  };
+  const first = await compileDiagram(options);
+  assert.equal(first.cacheHit, false);
+  assert.match(first.svg, /<path/);
+  assert.match(first.svg, /<use/);
+  assert.match(first.svg, /<desc[^>]*>Two functors/);
+  assert.doesNotMatch(first.svg, /<image|<text|<script/);
+  const ids = [...first.svg.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]);
+  for (const reference of first.svg.matchAll(/(?:href="#|url\(#)([^"\)]+)/g)) assert.ok(ids.includes(reference[1]));
+  const second = await compileDiagram(options);
+  assert.equal(second.cacheHit, true);
+  assert.equal(second.svg, first.svg);
+  await rm(directory, { recursive: true });
+  const rebuilt = await compileDiagram(options);
+  assert.equal(rebuilt.cacheHit, false);
+  assert.equal(rebuilt.hash, first.hash);
+  assert.equal(rebuilt.svg, first.svg);
+});
+
 test('native failures identify the source and compiler error and reject multiple pictures', async () => {
   const directory = await mkdtemp(path.join(tmpdir(), 'diagram-failure-'));
   try {

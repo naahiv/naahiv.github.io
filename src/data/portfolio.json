@@ -4,9 +4,14 @@
     "year": 2026,
     "kind": "project",
     "status": "in progress",
-    "pages": 120,
+    "pages": 128,
     "description": "The second in a two-part series on the use of derived categories in algebraic geometry. This is being actively heavily edited.",
-    "links": [],
+    "links": [
+      {
+        "label": "PDF",
+        "href": "stable-infty-cats-in-ag.pdf"
+      }
+    ],
     "category": "project"
   },
   {

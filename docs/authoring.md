@@ -157,6 +157,18 @@ See :ref[evaluation], :ref[lem:evaluation], and :ref[eq:additivity].
 
 Available block names are `theorem`, `lemma`, `proposition`, `corollary`, `definition`, `remark`, `example`, `question`, and `proof`. Theorem-like blocks share one counter per article. Add `unnumbered` to opt out. Proofs are always unnumbered and receive an end-of-proof mark automatically. Titles in square brackets are optional. The block's prose stays Markdown; do not put an entire statement inside math delimiters.
 
+Any of these environments can be made collapsible:
+
+```markdown
+:::remark[Morphisms between morphisms]{#rem:morphisms collapsible}
+An optional clarification, with ordinary Markdown, math, and diagrams.
+:::
+```
+
+`collapsible` starts open. Use `collapsed` instead to start closed; it implies collapsibility. If both flags are present, the block starts closed. Readers click the label/title line or focus it and press Enter or Space to toggle it. A closed block shows only its label, optional title, permalink when labelled, and a disclosure arrow. Numbering and `unnumbered` work as usual. Titles still support inline Markdown and math, and the full content is compiled and validated even when initially hidden.
+
+The disclosure itself works without JavaScript. With the reading script enabled, following a fragment link opens the target block and any enclosing collapsed blocks; printing temporarily opens all collapsible environments and restores their previous state afterward. Reloading returns to the author's chosen initial state, unless a fragment link requires the block to open.
+
 Use semantic labels such as `lem:evaluation`, not labels based on the current number. Labels begin with a letter and may contain letters, digits, `_`, `.`, `:`, or `-`. Explicit heading labels use `{#evaluation}`. Otherwise the heading receives an automatic label derived from its text; use an explicit label when readers will link to it.
 
 | Target | Syntax |
@@ -182,6 +194,8 @@ See :ref[diag:evaluation].
 ````
 
 A `tikzcd` fence contains the complete environment and a stable `#id`. **Both `caption` and `description` are optional and independent.** For a diagram without either, use an opening fence such as `` ```tikzcd {#diag:evaluation} ``. Omitted or empty fields produce no caption or description text; a description is not substituted for a missing caption. Captions support inline Markdown/math. Descriptions are plain text and, when supplied, also become SVG accessibility descriptions. Native TeX automatically produces a transparent SVG, while the original source remains in the Markdown. Shared and per-post commands are available.
+
+Quiver exports using `curve={height=...}`, `between={...}{...}`, and arrows between arrows are supported automatically by the bundled Quiver 1.6 package. Paste the exported diagram into the fence; its surrounding `\[...\]` is also accepted. No package declaration is needed in the post. Ordinary diagram edits update the running preview; changes to the compiler or its bundled package require stopping and starting it.
 
 This is real TeX Live TikZ-CD. Hooks, two-headed, equality, dashed, bent, diagonal, and parallel arrows are tested. Do not replace an unsupported special arrow with a different mathematical arrow. The native package profile, installation, cache behavior, isolation, and extension procedure are documented in [diagrams.md](diagrams.md). A TeX error stops the build with the source location and compiler output. Generated SVGs and `.cache/` are disposable; do not edit or commit them as the source.
 
@@ -229,8 +243,10 @@ Root PDFs remain the sole canonical copies. Portfolio metadata has moved from th
 
 1. Use the already-compiled source PDF; do not rebuild or alter the separate TeX project as part of publishing it. Verify the repository origin and find the unique tracked root filename, for example `git ls-files derived-cats-in-ag.pdf`.
 2. Replace that root file with the compiled PDF, preserving its exact filename. Check source/target SHA-256 equality and obtain the PDF's positive page count with your PDF tool (`pdfinfo` is available through Poppler).
-3. In `src/data/portfolio.json`, locate the unique record whose `links` contains `"href": "derived-cats-in-ag.pdf"`, and update its `pages`. Keep its two PDF links together and retain the entire array's chosen order. The Part 2 entry intentionally has an empty `links` array.
+3. In `src/data/portfolio.json`, locate the unique record whose `links` contains the target filename, and update its `pages`. Keep Part 1's two PDF links together and retain the entire array's chosen order. Part 2 links to `stable-infty-cats-in-ag.pdf`.
 4. Run `npm run verify`, serve `dist/`, and open the listing and `/derived-cats-in-ag.pdf`. Confirm the served PDF matches the canonical root file.
 5. Review `git diff --name-only`; a normal refresh should touch only that PDF and `src/data/portfolio.json`. Obtain separate authorization for Git publication or deployment as appropriate.
+
+For a first PDF release, add its root filename to `src/data/legacy-assets.json` as well as the appropriate portfolio record's `links`, so development and production builds serve it. Future refreshes keep that filename stable.
 
 Do not update `docs/baseline.json` to make an ordinary refresh pass: those frozen hashes record this migration. Ongoing verification compares current canonical files to build output. The test suite simulates the two-file refresh in a temporary directory without touching original PDFs. [migration.md](migration.md) records the preservation checks and asset allowlist.

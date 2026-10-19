@@ -164,7 +164,7 @@ as desired.
 :::
 
 
-### Determinants {#determinants}
+## Determinants {#determinants}
 
 Let $M$ be a finite free module of rank $n$. Then :ref[thm:free-basis] shows that $\LA^n M$ is free of rank 1. Thus, if $\phi\colon M\to M$ is an endomorphism, then $\LA^n\phi$ is multiplication by a unique element of $A$, which we write as $\det{\phi}\in A$ and call the **determinant** of $\phi$.
 
@@ -333,7 +333,7 @@ $$
 $$
 for which commutativity is easy to check on elementary wedge products.
 
-### Duality and the adjugate {#duality-and-adjugate}
+## Duality and the adjugate {#duality-and-adjugate}
 
 Next we discuss duality. Recall that a bilinear pairing between modules $M$ and $N$ normally means a bilinear map $M\times N\to A$, and it is **perfect** if the induced maps
 $$
@@ -426,7 +426,7 @@ Let $M$ be a finite free module of rank $n$. Then $\{x_1,\dots,x_n\}$ is a basis
 One direction is known; for the other, construct a map $\phi\colon M\to M$ to send a basis of $M$ to $x_1,\dots,x_n$. Taking top exterior powers, a basis of $\LA^nM$ is mapped to $x_1\wedge\cdots\wedge x_n$ which by assumption is an isomorphism, so $\det(\phi)\in A^\times$ which completes the proof.
 :::
 
-### The exterior algebra and direct sums {#exterior-algebra}
+## The exterior algebra and direct sums {#exterior-algebra}
 
 Now we conclude this section with some more basic properties of the exterior algebra on a module.
 
