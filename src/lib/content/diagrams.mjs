@@ -8,13 +8,15 @@ import { promisify } from 'node:util';
 import { DOMParser, XMLSerializer } from '@xmldom/xmldom';
 
 const execFileAsync = promisify(execFile);
-const PROFILE_VERSION = 'native-tikzcd-dvi-v3';
-const PACKAGES = ['standalone.cls', 'preview.sty', 'tikz.sty', 'pgf.revision.tex', 'pgfsys-dvisvgm.def', 'tikz-cd.sty', 'amsmath.sty', 'amssymb.sty', 'mathtools.sty', 'mathrsfs.sty'];
+const PROFILE_VERSION = 'native-tikzcd-dvi-v4';
+const PACKAGES = ['standalone.cls', 'preview.sty', 'tikz.sty', 'pgf.revision.tex', 'pgfsys-dvisvgm.def', 'tikz-cd.sty', 'amsmath.sty', 'amssymb.sty', 'mathtools.sty', 'mathrsfs.sty', 'spath3.sty', 'tikzlibraryspath3.code.tex', 'tikzlibrarydecorations.pathmorphing.code.tex', 'pgflibrarydecorations.pathmorphing.code.tex'];
+const QUIVER_PACKAGE = new URL('./tex/quiver/quiver.sty', import.meta.url);
 const PREAMBLE = String.raw`\documentclass[dvisvgm,preview,multi=tikzpicture,border=5pt]{standalone}
 \def\pgfsysdriver{pgfsys-dvisvgm.def}
 \usepackage{tikz}
 \usepackage{tikz-cd}
 \usepackage{amsmath,amssymb,mathtools,mathrsfs}
+\usepackage{quiver}
 \usetikzlibrary{arrows.meta,decorations.markings,calc}
 `;
 const SVG_NS = 'http://www.w3.org/2000/svg';
@@ -189,7 +191,9 @@ export async function compileDiagram({ source, description = '', id, macros = ''
   const env = restrictedEnvironment(directory);
   try {
     const { paths, versions, packageHashes } = await inspectToolchain(directory, env);
-    const hash = digest(JSON.stringify({ profile: PROFILE_VERSION, preamble: PREAMBLE, source, macros, versions, packageHashes, options: ['--no-fonts', '--bbox=preview', '--exact'] }));
+    // Bundle Quiver so local and CI builds do not depend on the OS package version.
+    const quiver = await readFile(QUIVER_PACKAGE);
+    const hash = digest(JSON.stringify({ profile: PROFILE_VERSION, preamble: PREAMBLE, source, macros, versions, packageHashes, quiver: digest(quiver), options: ['--no-fonts', '--bbox=preview', '--exact'] }));
     const cacheFile = path.join(cacheDir, `${hash}.svg`);
     let rawSvg;
     let cacheHit = false;
@@ -200,6 +204,7 @@ export async function compileDiagram({ source, description = '', id, macros = ''
       if (error.code !== 'ENOENT') throw error;
     }
     if (!cacheHit) {
+      await writeFile(path.join(directory, 'quiver.sty'), quiver);
       await writeFile(path.join(directory, 'diagram.tex'), `${PREAMBLE}\n${macros}\n\\begin{document}\n${source}\n\\end{document}\n`);
       try {
         const result = await run(paths.latex, ['-interaction=nonstopmode', '-halt-on-error', '-no-shell-escape', '-file-line-error', 'diagram.tex'], { directory, env, bounded: true });

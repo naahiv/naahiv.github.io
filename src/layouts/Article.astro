@@ -3,7 +3,14 @@ import Site from './Site.astro';
 import 'katex/dist/katex.min.css';
 import { dateLabel, tagSlug } from '../lib/posts';
 const {post, allPosts=[]} = Astro.props;
-const toc = post.headings?.filter(h=>h.depth===2) || [];
+type TocSection = { id: string; text: string; subsections: { id: string; text: string }[] };
+const toc: TocSection[] = [];
+for (const heading of post.headings || []) {
+  if (heading.depth === 2) toc.push({ ...heading, subsections: [] });
+  else if (heading.depth === 3) toc.at(-1)?.subsections.push(heading);
+}
+const tocHeadingCount = toc.reduce((count, section) => count + 1 + section.subsections.length, 0);
+const hasToc = toc.length > 0 && tocHeadingCount >= 3;
 const series = post.series ? allPosts.filter(p=>p.series?.name===post.series.name).sort((a,b)=>a.series.order-b.series.order) : [];
 const index = series.findIndex(p=>p.slug===post.slug);
 const related = allPosts.filter(p=>p.slug!==post.slug).slice(0,2);
@@ -19,8 +26,20 @@ const related = allPosts.filter(p=>p.slug!==post.slug).slice(0,2);
       <div class="article-tags">{post.tags.map(tag=><a href={`/blog/tags/${tagSlug(tag)}/`}>{tag}</a>)}</div>
       {post.updated && <p class="updated">Updated <time datetime={post.updated}>{dateLabel(post.updated)}</time></p>}
     </header>
-    <div class:list={['reading-layout',{'has-toc':toc.length>=3}]}>
-      {toc.length>=3 && <aside class="contents" aria-label="Article contents"><details open><summary>On this page</summary><ol>{toc.map(h=><li><a href={`#${h.id}`}>{h.text}</a></li>)}</ol></details></aside>}
+    <div class:list={['reading-layout',{'has-toc':hasToc}]}>
+      {hasToc && <aside class="contents" aria-label="Article contents">
+        <details open>
+          <summary>On this page</summary>
+          <ol class="contents-sections">
+            {toc.map(section=><li>
+              <a href={`#${section.id}`}>{section.text}</a>
+              {section.subsections.length > 0 && <ol class="contents-subsections">
+                {section.subsections.map(heading=><li><a href={`#${heading.id}`}>{heading.text}</a></li>)}
+              </ol>}
+            </li>)}
+          </ol>
+        </details>
+      </aside>}
       <article class="prose" aria-label={post.title} set:html={post.html} />
     </div>
     <div class="article-end">

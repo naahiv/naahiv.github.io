@@ -327,7 +327,8 @@ test('portfolio filters keep normalized categories, content, and intentional ord
   const cards = page.locator('[data-work-item]');
   await expect(cards).toHaveCount(canonical.length);
   expect(await cards.locator('h3').allTextContents()).toEqual(canonical.map(item => item.title));
-  await expect(cards.first().locator('a')).toHaveCount(0);
+  await expect(cards.first().getByRole('link', { name: 'PDF', exact: true })).toHaveAttribute('href', '/stable-infty-cats-in-ag.pdf');
+  await expect(cards.first().locator('.work-meta')).toContainText(`${canonical[0].pages} pages`);
   await expect(cards.nth(1).getByRole('link', { name: 'PDF', exact: true })).toHaveAttribute('href', '/derived-cats-in-ag.pdf');
   await expect(cards.nth(1).getByRole('link', { name: 'Book PDF', exact: true })).toHaveAttribute('href', '/derived-cats-in-ag-book.pdf');
   await page.getByRole('button', { name: 'Notes & surveys', exact: true }).click();

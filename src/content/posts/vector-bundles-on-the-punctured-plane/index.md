@@ -15,6 +15,8 @@ macros: |
   \DeclareMathOperator{\depth}{depth}
 ---
 
+## Background {#background}
+
 The Quillen–Suslin theorem says that every vector bundle over affine space over a field is trivial. There are also non-affine schemes with this property. The goal of this post is to prove one example, namely the punctured affine plane.
 
 Let $k$ be a field, write $\A_k^2=\Spec(k[x,y])$, and set
@@ -34,8 +36,6 @@ The open immersion $j\colon U\hookrightarrow\A_k^2$ is a Serre morphism of schem
 We will use the Quillen–Suslin theorem in this proof. Its proof is divided into :post[quillen-suslin-1] and :post[quillen-suslin-2]; the version we need allows a PID as the coefficient ring.
 
 For any open immersion $j\colon U\hookrightarrow X$, there is a canonical isomorphism $j^*j_*\E\cong\E$. Hence, if the pushforward of every vector bundle on $U$ is a vector bundle on $X$, then $j$ is Serre. This is how we will prove the theorem. The argument proceeds in three steps: $j_*\E$ is coherent, it is reflexive, and finally it is locally free.
-
-## The punctured plane {#punctured-plane-functions}
 
 We must first study the open subscheme $U\subset\A_k^2$. Observe that $D(x)\cup D(y)=U$ and $D(x)\cap D(y)=D(xy)$. Therefore the sheaf condition shows that
 $$
@@ -59,7 +59,9 @@ $$
 $$
 is an isomorphism. If $U$ were affine, the open immersion $j$ would therefore be an isomorphism of affine schemes, which it is not. Thus $U$ is non-affine.
 
-## Coherence {#coherence}
+## The proof
+
+### Coherence {#coherence}
 
 The schemes $\A_k^2$ and $U$ are Noetherian. The open immersion $j$ is quasicompact and quasiseparated, so $j_*$ preserves quasicoherence. Moreover, over a Noetherian scheme, a quasicoherent sheaf is coherent exactly when it is of finite type. Any vector bundle $\E$ on $U$ is coherent; we need to show that its pushforward is of finite type as well.
 
@@ -106,7 +108,7 @@ It follows that $M$ is an $R$-submodule of the finite free module $x^{-a}R^{\opl
 
 The bound on the denominators is needed here. The sheaf condition alone gives an injection into $R_x^{\oplus n}\oplus R_y^{\oplus n}$, but those localized modules are not finite over $R$.
 
-## Reflexivity {#reflexivity}
+### Reflexivity {#reflexivity}
 
 It is at this point that we need some more powerful tools, namely reflexive sheaves. If $\F$ is a coherent sheaf on a locally Noetherian scheme $X$, write
 $$
@@ -164,7 +166,7 @@ $$
 The left arrow is an isomorphism because $\F=j_*\E$, the right arrow is an isomorphism by the depth argument, and the bottom arrow is an isomorphism because $\E$ is locally free. Hence the top arrow, which is the evaluation map, is an isomorphism as well.
 :::
 
-## Local freeness {#local-freeness}
+### Local freeness {#local-freeness}
 
 We can finish with one additional commutative algebra lemma.
 

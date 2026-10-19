@@ -1,5 +1,39 @@
 # Implementation progress
 
+## First stable infinity-categories PDF — 2026-10-18
+
+Copied the latest complete `Stable infty-categories/main/main.pdf` (compiled 18 October at 16:59 PDT) unchanged to the canonical root asset `stable-infty-cats-in-ag.pdf`. Part 2 now has its first PDF link and displays the PDF's verified 128 pages, replacing 120. Added the filename to the public asset allowlist and updated the authoring instructions, repository contract, and existing portfolio browser assertion. All 18 records retain their order; the other 17 records and all 19 previous canonical assets are unchanged.
+
+Validation: production `npm run verify` passed for 18 records and 20 assets (18 PDFs); six preservation tests passed with the optional frozen-migration check skipped; portfolio browser checks passed in Chromium, Firefox, and WebKit. Source, website copy, and served preview PDF have identical SHA-256 hashes. The running preview was visually checked; provenance, verification, and screenshots are in the external `stable-infty-cats-first-edition/` working folder. Changes remain local on `codex/blog-drafts`. Next action: review the [Part 2 entry](http://127.0.0.1:4323/papers/) before separately authorized publication.
+
+## Quiver curved and higher arrows — 2026-10-17
+
+The new modification diagram in `whatis-infty-cat` failed on Quiver's `curve` key; its `between` style also needs Quiver support. The native compiler now loads an unchanged, MIT-licensed Quiver 1.6.0 package from `src/lib/content/tex/quiver/` inside each isolated build directory. Its bytes and system `spath3` dependencies participate in the cache key; the profile is now v4. The user's diagram source and canonical `quiver-macros.tex` remain untouched. Authoring and diagram documentation explain the supported exports.
+
+All 7 diagram tests and 17 mathematical-content tests passed, including a new regression fixture preserving the exact exported modification diagram, fresh-cache compilation, cache reuse, and reproducible rebuilding. Six live-browser cases passed across Chromium, Firefox, and WebKit at 1440px and 390px; screenshots show correct curves, double arrows, and normal-sized labels, with no page overflow. Evidence is in the external `quiver-diagram/verification.json` and screenshots. A separate native smoke test passed using Ubuntu 24.04's PGF 3.1.10, TikZ-CD 1.0, and spath3 2.7 trees with the local TeX base/converter; this verifies those dependency versions, not a complete hosted CI run. Evidence is in `quiver-ubuntu2404-audit/native-smoke/` outside the checkout.
+
+The local preview was restarted with the new compiler. Targeted `git diff --check` passes; the full check reports an existing trailing space in the user's concurrently edited draft at line 59. Changes remain local on `codex/blog-drafts`. Next action: review the [rendered modification diagram](http://127.0.0.1:4323/blog/whatis-infty-cat/#diag:modifications).
+
+## Collapsible mathematical environments — 2026-10-17
+
+All nine theorem-like environments accept `{collapsible}` (initially open) or `{collapsed}` (initially closed). Native details/summary keeps the numbered label, optional Markdown/math title, permalink, and a small disclosure arrow visible; the body retains its original Markdown, equations, diagrams, and proof QED. Ordinary environments retain their existing run-in formatting. The “Morphisms between morphisms” remark in the user's `whatis-infty-cat` draft now has the `collapsible` flag; its prose is unchanged. Syntax and behavior are documented in `docs/authoring.md`.
+
+The reading script reveals a fragment target and enclosing disclosures, including repeated clicks on the current fragment. Print events temporarily expand mathematical disclosures and restore their prior states. Nine focused compiler tests passed, including four new regression tests covering all environments, nested/rich content, counters/references, QEDs, and validation of hidden content. Nine browser cases passed across Chromium, Firefox, and WebKit at desktop/phone widths, covering mouse/keyboard toggles, initial/nested/repeated fragment navigation, print events, no-JavaScript toggling, and overflow. Chromium accessibility scans passed and real PDF generation confirmed before/after-print state restoration. Open/closed screenshots were visually checked. Evidence is in the external [disclosure verification folder](<C:/Users/vihaa/Documents/Generic testing/website-work/naahiv.github.io/collapsible-environments/verification.json>).
+
+The local preview was restarted and is serving the updated compiler; an initial automatic approval-review timeout was resolved using the existing WSL helper. `git diff --check` passes. Changes remain local on `codex/blog-drafts`; next action is user review of the remark in the [current draft](http://127.0.0.1:4323/blog/whatis-infty-cat/).
+
+## Tighter paragraph-to-list spacing — 2026-10-17
+
+Paragraphs immediately followed by ordered or unordered lists now use matching `.6em` adjoining margins, reducing the gap from about 22px to 11px on desktop. Verified the category list in the running `whatis-infty-cat` draft at 390px and 1440px in Chromium and WebKit; no horizontal overflow, and screenshots were visually checked. Evidence is in the external `list-spacing/` working folder. `git diff --check` passes. Changes remain local; next action is user review in the existing preview.
+
+## Nested article contents — 2026-10-16
+
+The contents panel now groups `###` subsection links beneath their preceding `##` section, with a small indent, regular-weight muted text, and stronger section titles. Following the user's refinement, the panel appears with at least three section/subsection entries in total and at least one main section; subsections without a preceding main section are not included. Tablet layouts keep section groups together in two columns; phones use a single column within the existing collapsed disclosure. Article typography is unchanged.
+
+Verified 24 live-preview cases across Chromium, Firefox, and WebKit, including widths 320, 390, 768, 1241, and 1440; subsection targets and navigation, grouping, overflow, mobile disclosure, and no-JavaScript rendering all passed. Desktop, tablet, and phone screenshots were visually reviewed. Evidence is in [the external TOC review](<C:/Users/vihaa/Documents/Generic testing/website-work/naahiv.github.io/toc-review/report.json>). `git diff --check` passes. Changes remain local on `codex/blog-drafts`; next action is to review the [Dold–Kan preview](http://127.0.0.1:4323/blog/classical-dold-kan-correspondence/).
+
+Cutoff refinement verified against the running preview: Vector bundles on the punctured plane now shows its two sections and three subsections; Dold–Kan retains all seven links; the one-section short specimen still has no contents panel. All three routes return HTTP 200. This check supplements the earlier layout checks above.
+
 ## Eight-post publication PR — 2026-10-16
 
 The user approved publication through [PR #2](https://github.com/naahiv/naahiv.github.io/pull/2) from `codex/blog-drafts` to `master`. Exterior Powers 1 and 2, Jennings' theorem, Classical Dold–Kan, Vector bundles on the punctured plane, Quillen–Suslin 1 and 2, and Tannakian Reconstruction now have `draft: false`. The two development specimens remain drafts; the separate unfinished `my-first-post` stays untracked and unpublished. The PR also includes the previously reviewed article formatting, optional diagram metadata, and external working-directory changes. Canonical assets and portfolio metadata are unchanged.
