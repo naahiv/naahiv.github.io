@@ -1,5 +1,15 @@
 # Implementation progress
 
+## Privacy footer for the Caltech domain — 2026-10-29
+
+Added a compact, shared footer row linking directly to the official Caltech Privacy Notice and GitHub Privacy Statement. At the user's request, the hosting credit reads only “Hosted on GitHub Pages.” Links use the existing green accent, visible underlines, and readable 13px text; they wrap on narrow screens.
+
+Validation: `npm run verify` passed through the existing WSL toolchain, preserving all 18 portfolio records and 20 canonical assets. Both links occur in all 23 generated HTML pages. In-app browser checks at 1440px, 390px, and 320px showed readable links and no horizontal overflow; screenshots are in the external `privacy-footer/` working folder. `git diff --check` passed. The production preview is at `http://127.0.0.1:4324/#about`.
+
+Follow-up: rebuilt successfully after shortening the hosting credit and confirmed the updated wording in the refreshed preview. The current footer screenshot is `privacy-footer/short-credit.jpg` in the external working folder.
+
+The user approved committing and publishing these changes on 29 October. Commit, hosted validation, and deployment results are recorded in the external [publication record](<C:/Users/vihaa/Documents/Generic testing/website-work/naahiv.github.io/privacy-footer/publication.md>). The existing GitHub Pages workflow publishes `master`; Caltech domain configuration is a separate follow-up once the domain is provided.
+
 ## First stable infinity-categories PDF — 2026-10-18
 
 Copied the latest complete `Stable infty-categories/main/main.pdf` (compiled 18 October at 16:59 PDT) unchanged to the canonical root asset `stable-infty-cats-in-ag.pdf`. Part 2 now has its first PDF link and displays the PDF's verified 128 pages, replacing 120. Added the filename to the public asset allowlist and updated the authoring instructions, repository contract, and existing portfolio browser assertion. All 18 records retain their order; the other 17 records and all 19 previous canonical assets are unchanged.

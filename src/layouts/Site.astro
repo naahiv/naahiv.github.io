@@ -44,6 +44,13 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <footer class="site-footer shell">
       <p>© {new Date().getUTCFullYear()} Vihaan Dheer</p>
       <div><a href="mailto:naahiv@caltech.edu">Email</a><ResumeLink /><a href="/rss.xml">RSS</a><a href="#top">Back to top ↑</a></div>
+      <div class="footer-privacy">
+        <nav aria-label="Privacy notices">
+          <a href="https://www.caltech.edu/privacy-notice">Caltech Privacy Notice</a>
+          <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub Privacy Statement</a>
+        </nav>
+        <p>Hosted on GitHub Pages.</p>
+      </div>
     </footer>
   </body>
 </html>
